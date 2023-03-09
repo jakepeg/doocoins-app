@@ -8,10 +8,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import theme from './themes/DraftbitTheme.js';
 import LinkingConfiguration from './LinkingConfiguration.js';
 
-import LoggedinScreen from './screens/LoggedinScreen';
+import ChildlistScreen from './screens/ChildlistScreen';
 import LoginScreen from './screens/LoginScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import WalletScreen from './screens/WalletScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,6 +71,7 @@ export default function RootAppNavigator() {
   return (
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator
+        headerMode="none"
         screenOptions={{
           headerStyle: {
             backgroundColor: theme.colors['Strong'],
@@ -93,9 +95,14 @@ export default function RootAppNavigator() {
           options={{ title: 'Login' }}
         />
         <Stack.Screen
-          name="LoggedinScreen"
-          component={LoggedinScreen}
-          options={{ title: 'Logged in' }}
+          name="ChildlistScreen"
+          component={ChildlistScreen}
+          options={{ title: 'Childlist' }}
+        />
+        <Stack.Screen
+          name="WalletScreen"
+          component={WalletScreen}
+          options={{ title: 'Wallet' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

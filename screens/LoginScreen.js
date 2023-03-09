@@ -3,6 +3,7 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import { Button, ScreenContainer, withTheme } from '@draftbit/ui';
+import { useIsFocused } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
 const LoginScreen = props => {
@@ -12,6 +13,26 @@ const LoginScreen = props => {
 
   const { theme } = props;
   const { navigation } = props;
+
+  const isFocused = useIsFocused();
+  React.useEffect(() => {
+    const handler = async () => {
+      try {
+        if (!isFocused) {
+          return;
+        }
+        const Verify = await DooCoinsAPIApi.getLoggedInUserGET(Constants);
+        const email = Verify.email;
+        if (!email) {
+          return;
+        }
+        navigation.navigate('ChildlistScreen');
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    handler();
+  }, [isFocused]);
 
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
@@ -120,7 +141,7 @@ const LoginScreen = props => {
                     key: 'AUTHORIZATION_HEADER',
                     value: 'Bearer ' + authToken,
                   });
-                  navigation.navigate('LoggedinScreen');
+                  navigation.navigate('ChildlistScreen');
                 } catch (err) {
                   console.error(err);
                 }
@@ -128,7 +149,7 @@ const LoginScreen = props => {
               handler();
             }}
             style={[
-              GlobalStyles.ButtonStyles(theme)['Button'],
+              GlobalStyles.ButtonStyles(theme)['Button 2'],
               styles(theme).Buttonc6389ac7,
             ]}
             title={'continue'}
@@ -140,6 +161,15 @@ const LoginScreen = props => {
             ]}
           >
             {'register'}
+          </Text>
+
+          <Text
+            style={[
+              GlobalStyles.TextStyles(theme)['Text'],
+              styles(theme).Texte1a7dc0c,
+            ]}
+          >
+            {Constants['ERROR_MESSAGE']}
           </Text>
         </View>
       </View>
@@ -180,6 +210,12 @@ const styles = theme =>
       fontFamily: 'Roboto_400Regular',
       fontSize: 26,
       textAlign: 'center',
+    },
+    Texte1a7dc0c: {
+      color: theme.colors['Error'],
+      fontFamily: 'Roboto_400Regular',
+      fontSize: 20,
+      marginTop: 20,
     },
     Textea4c50a6: {
       color: theme.colors['Primary'],

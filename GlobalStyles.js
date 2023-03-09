@@ -9,6 +9,13 @@ export const ButtonStyles = theme =>
       fontWeight: '700',
       textAlign: 'center',
     },
+    'Button 2': {
+      backgroundColor: theme.colors.primary,
+      borderRadius: 8,
+      fontFamily: 'System',
+      fontWeight: '700',
+      textAlign: 'center',
+    },
   });
 
 export const FetchStyles = theme =>
@@ -16,6 +23,8 @@ export const FetchStyles = theme =>
 
 export const ImageStyles = theme =>
   StyleSheet.create({ Image: { height: 100, width: 100 } });
+
+export const FlatListStyles = theme => StyleSheet.create({ List: { flex: 1 } });
 
 export const SwiperStyles = theme =>
   StyleSheet.create({ Swiper: { height: 300, width: '100%' } });

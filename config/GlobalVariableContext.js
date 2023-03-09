@@ -7,7 +7,12 @@ const DeviceVariables = {
   AUTHORIZATION_HEADER:
     'eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.hQJt6R9HGrjAmCL75bH_Ck3_iVvZYcyPoeP88WX5OpNp30tQWm6y-42FXxBGN4M7nSox1q-n_JbaS9qsKDp5aVdQxghDmH3S.wT7Ue9KFolNJqdLIiqE5gg.sxB-vnG-e-wm4eLVcKIYUrbFi3AVb2U41QpjcRWUa839DKJ3RxIRXlYiNiNLP64HlbgQjVgzu1QJBRSKXDxwy8MxXKeSEtmhoejPU2huCRKESxa54hn-kzMD_zMz0KhvH05WEEblixEWigKb9gcwXkYfLPneGSTh3pCb715mFfk.UDK9uddPCP69KS690qO4dcasy7JSp_9cbKsBUDNVqgE',
 };
-const AppVariables = { ERROR_MESSAGE: '' };
+const AppVariables = {
+  Child_ID: '',
+  ERROR_MESSAGE: '',
+  Parent_ID: '',
+  Visible: false,
+};
 const GlobalVariableContext = React.createContext();
 const GlobalVariableUpdater = React.createContext();
 
