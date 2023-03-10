@@ -10,13 +10,12 @@ import { useIsFocused } from '@react-navigation/native';
 import usePrevious from '../utils/usePrevious';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 
-export const addChildPOST = Constants =>
+export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children`, {
     body: JSON.stringify({
-      name: 'Quin',
-      parents_id: 1,
+      name: new_child,
+      parents_id: Parent_ID,
       balance: 0,
-      rewards_id: 1,
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
@@ -54,6 +53,8 @@ export const FetchAddChildPOST = ({
   children,
   onData = () => {},
   refetchInterval,
+  Parent_ID,
+  new_child,
 }) => {
   const Constants = GlobalVariables.useValues();
   const isFocused = useIsFocused();
@@ -64,7 +65,7 @@ export const FetchAddChildPOST = ({
     data,
     error,
     mutate: refetch,
-  } = useAddChildPOST({}, { refetchInterval });
+  } = useAddChildPOST({ Parent_ID, new_child }, { refetchInterval });
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {

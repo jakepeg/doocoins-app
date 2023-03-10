@@ -5,14 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DeviceVariables = {
   AUTHORIZATION_HEADER:
-    'eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.hQJt6R9HGrjAmCL75bH_Ck3_iVvZYcyPoeP88WX5OpNp30tQWm6y-42FXxBGN4M7nSox1q-n_JbaS9qsKDp5aVdQxghDmH3S.wT7Ue9KFolNJqdLIiqE5gg.sxB-vnG-e-wm4eLVcKIYUrbFi3AVb2U41QpjcRWUa839DKJ3RxIRXlYiNiNLP64HlbgQjVgzu1QJBRSKXDxwy8MxXKeSEtmhoejPU2huCRKESxa54hn-kzMD_zMz0KhvH05WEEblixEWigKb9gcwXkYfLPneGSTh3pCb715mFfk.UDK9uddPCP69KS690qO4dcasy7JSp_9cbKsBUDNVqgE',
-};
-const AppVariables = {
-  Child_ID: '',
-  ERROR_MESSAGE: '',
+    'eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.5_Z2Ajj11uqc-0ctLiNqBbQKSR-FbqEgDlAS5oOTagsaN6RYeelIw9u6FOVjRKDr5gawojNcAquMUXGs6XXKW2OtWfXjDKEy.TKFPH6UKUXs9HSH-delKcg.i4wfjthuMVysWmCgElQHHdqaH0ffHwx_FBPJs3LlR-0mjl6I53jSwzB0WRvfr2Bipnucd8h-MJQg6nk_U4aYyTptqlRSMzCCOZtXC98pL_thJWo5HpG6409ux2MjCu-CArBaFBKd5y6xmdNnzqj5EdGwDfXIopHncQZ0YyHT0uU.ygaleIXVtmtcrh0KyeNYoZg83X5ezWVHcCaZfgsS5lg',
   Parent_ID: '',
-  Visible: false,
 };
+const AppVariables = { Child_ID: '', ERROR_MESSAGE: '', Visible: false };
 const GlobalVariableContext = React.createContext();
 const GlobalVariableUpdater = React.createContext();
 

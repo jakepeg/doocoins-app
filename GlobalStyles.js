@@ -1,5 +1,17 @@
 import { StyleSheet } from 'react-native';
 
+export const ViewStyles = theme =>
+  StyleSheet.create({
+    AddChildForm: {
+      alignContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      backgroundColor: theme.colors['Strong'],
+      marginTop: 20,
+      width: '100%',
+    },
+  });
+
 export const ButtonStyles = theme =>
   StyleSheet.create({
     Button: {

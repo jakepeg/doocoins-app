@@ -19,7 +19,11 @@ const linking = {
   enabled: Platform.OS === 'web' ? false : true,
   prefixes: [prefix],
   config: {
-    screens: {},
+    screens: {
+      BottomNav: {
+        screens: {},
+      },
+    },
   },
 };
 

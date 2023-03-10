@@ -3,21 +3,16 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
-import {
-  Button,
-  IconButton,
-  ScreenContainer,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui';
+import { Button, ScreenContainer, Touchable, withTheme } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   ActivityIndicator,
   FlatList,
   Image,
-  Modal,
+  ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import { Fetch } from 'react-request';
@@ -29,6 +24,8 @@ const ChildlistScreen = props => {
 
   const { theme } = props;
   const { navigation } = props;
+
+  const dooCoinsAPIAddChildPOST = DooCoinsAPIApi.useAddChildPOST();
 
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -49,6 +46,9 @@ const ChildlistScreen = props => {
     };
     handler();
   }, [isFocused]);
+
+  const [new_child, setNew_child] = React.useState('');
+  const [textInputValue, setTextInputValue] = React.useState('');
 
   return (
     <ScreenContainer
@@ -74,6 +74,10 @@ const ChildlistScreen = props => {
                 value: '',
               });
               navigation.navigate('LoginScreen');
+              setGlobalVariableValue({
+                key: 'Parent_ID',
+                value: '',
+              });
             } catch (err) {
               console.error(err);
             }
@@ -96,35 +100,6 @@ const ChildlistScreen = props => {
           {'My children'}
         </Text>
       </View>
-
-      <Modal
-        visible={Constants['Visible']}
-        animationType={'slide'}
-        presentationStyle={'fullScreen'}
-      >
-        <Text
-          style={[
-            GlobalStyles.TextStyles(theme)['Text'],
-            styles(theme).Textbb873524,
-          ]}
-        >
-          {'modal content'}
-        </Text>
-        <IconButton
-          onPress={() => {
-            try {
-              setGlobalVariableValue({
-                key: 'Visible',
-                value: false,
-              });
-            } catch (err) {
-              console.error(err);
-            }
-          }}
-          size={32}
-          icon={'AntDesign/close'}
-        />
-      </Modal>
       {/* Child list */}
       <View>
         <DooCoinsAPIApi.FetchChildListGET>
@@ -143,69 +118,120 @@ const ChildlistScreen = props => {
             }
 
             return (
-              <FlatList
-                data={fetchData}
-                listKey={'MbWtQFGu'}
-                keyExtractor={listData =>
-                  listData?.id || listData?.uuid || JSON.stringify(listData)
-                }
-                renderItem={({ item }) => {
-                  const listData = item;
-                  return (
-                    <Touchable>
-                      <View style={styles(theme).View79f747d2}>
-                        {/* ChildName */}
-                        <Text
-                          style={[
-                            GlobalStyles.TextStyles(theme)['Text'],
-                            styles(theme).Text0759f2cf,
-                          ]}
-                        >
-                          {listData?.name}
-                        </Text>
-                        {/* Balance */}
-                        <Text
-                          style={[
-                            GlobalStyles.TextStyles(theme)['Text'],
-                            styles(theme).Text9ff811ac,
-                          ]}
-                        >
-                          {listData?.balance}
-                        </Text>
-                      </View>
-                    </Touchable>
-                  );
-                }}
-                style={GlobalStyles.FlatListStyles(theme)['List']}
-                contentContainerStyle={
-                  GlobalStyles.FlatListStyles(theme)['List']
-                }
-                numColumns={1}
-                onEndReachedThreshold={0.5}
+              <ScrollView
                 showsHorizontalScrollIndicator={true}
                 showsVerticalScrollIndicator={true}
-              />
+                bounces={true}
+              >
+                <FlatList
+                  data={fetchData}
+                  listKey={'MbWtQFGu'}
+                  keyExtractor={listData =>
+                    listData?.id || listData?.uuid || JSON.stringify(listData)
+                  }
+                  renderItem={({ item }) => {
+                    const listData = item;
+                    return (
+                      <Touchable
+                        onPress={() => {
+                          try {
+                            setGlobalVariableValue({
+                              key: 'Child_ID',
+                              value: listData?.id,
+                            });
+                            navigation.navigate('WalletScreen');
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                      >
+                        <View style={styles(theme).View79f747d2}>
+                          {/* ChildName */}
+                          <Text
+                            style={[
+                              GlobalStyles.TextStyles(theme)['Text'],
+                              styles(theme).Text0759f2cf,
+                            ]}
+                          >
+                            {listData?.name}
+                          </Text>
+                          {/* Balance */}
+                          <Text
+                            style={[
+                              GlobalStyles.TextStyles(theme)['Text'],
+                              styles(theme).Text9ff811ac,
+                            ]}
+                          >
+                            {listData?.balance}
+                          </Text>
+                        </View>
+                      </Touchable>
+                    );
+                  }}
+                  style={GlobalStyles.FlatListStyles(theme)['List']}
+                  contentContainerStyle={
+                    GlobalStyles.FlatListStyles(theme)['List']
+                  }
+                  numColumns={1}
+                  onEndReachedThreshold={0.5}
+                  showsHorizontalScrollIndicator={true}
+                  showsVerticalScrollIndicator={true}
+                />
+              </ScrollView>
             );
           }}
         </DooCoinsAPIApi.FetchChildListGET>
       </View>
-      {/* Plus button */}
-      <View style={styles(theme).View3b240580}>
-        <IconButton
-          onPress={() => {
+      {/* AddChildForm */}
+      <View style={GlobalStyles.ViewStyles(theme)['AddChildForm']}>
+        {/* Add child */}
+        <Text
+          style={[
+            GlobalStyles.TextStyles(theme)['Text'],
+            styles(theme).Text1cea83d9,
+          ]}
+        >
+          {'Add a child'}
+        </Text>
+        {/* child_name */}
+        <TextInput
+          onChangeText={newChildNameValue => {
             try {
-              setGlobalVariableValue({
-                key: 'Visible',
-                value: true,
-              });
+              setNew_child(newChildNameValue);
             } catch (err) {
               console.error(err);
             }
           }}
-          style={styles(theme).IconButton8c840908}
-          size={50}
-          icon={'Entypo/circle-with-plus'}
-          color={theme.colors['Option_Selected_Color']}
+          style={[
+            GlobalStyles.TextInputStyles(theme)['Text Input'],
+            styles(theme).TextInputaf0777f7,
+          ]}
+          value={new_child}
+          placeholder={'child name'}
+          autoCapitalize={'none'}
+          clearTextOnFocus={true}
+          textContentType={'givenName'}
+          clearButtonMode={'never'}
+        />
+        <Button
+          onPress={() => {
+            const handler = async () => {
+              try {
+                await dooCoinsAPIAddChildPOST.mutateAsync({
+                  Parent_ID: Constants['Parent_ID'],
+                  new_child: new_child,
+                });
+              } catch (err) {
+                console.error(err);
+              }
+            };
+            handler();
+          }}
+          style={[
+            GlobalStyles.ButtonStyles(theme)['Button'],
+            styles(theme).Buttonc6389ac7,
+          ]}
+          title={'add child'}
         />
       </View>
     </ScreenContainer>
@@ -226,12 +252,25 @@ const styles = theme =>
       textDecorationLine: 'underline',
       width: 60,
     },
-    IconButton8c840908: { marginBottom: 20 },
+    Buttonc6389ac7: {
+      fontFamily: 'Roboto_400Regular',
+      fontSize: 26,
+      height: 50,
+      marginTop: 20,
+      width: '80%',
+    },
     Imagec4d7b6b4: { height: 20, marginLeft: 15, width: 30 },
     Text0759f2cf: {
       color: theme.colors['Light Inverse'],
       fontFamily: 'Roboto_400Regular',
       fontSize: 26,
+    },
+    Text1cea83d9: {
+      color: theme.colors['Strong Inverse'],
+      fontFamily: 'Roboto_400Regular',
+      fontSize: 26,
+      margin: 20,
+      textAlign: 'center',
     },
     Text62985bff: {
       color: theme.colors['Strong Inverse'],
@@ -246,13 +285,16 @@ const styles = theme =>
       fontFamily: 'Roboto_400Regular',
       fontSize: 26,
     },
-    Textbb873524: { color: theme.colors['Light Inverse'] },
-    View3b240580: {
-      alignContent: 'flex-start',
-      alignItems: 'center',
-      bottom: 0,
-      position: 'absolute',
-      width: '100%',
+    TextInputaf0777f7: {
+      backgroundColor: theme.colors['Medium'],
+      borderColor: theme.colors['Primary'],
+      borderWidth: 2,
+      color: theme.colors['Light Inverse'],
+      fontFamily: 'Roboto_400Regular',
+      fontSize: 26,
+      height: 50,
+      textAlign: 'center',
+      width: '80%',
     },
     View79f747d2: {
       flexDirection: 'row',

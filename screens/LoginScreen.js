@@ -130,6 +130,7 @@ const LoginScreen = props => {
                   );
                   const authToken = loginResponseJson.authToken;
                   const message = loginResponseJson.message;
+                  const parent_id = loginResponseJson.parent_id;
                   setGlobalVariableValue({
                     key: 'ERROR_MESSAGE',
                     value: message,
@@ -137,6 +138,10 @@ const LoginScreen = props => {
                   if (!authToken) {
                     return;
                   }
+                  setGlobalVariableValue({
+                    key: 'Parent_ID',
+                    value: parent_id,
+                  });
                   setGlobalVariableValue({
                     key: 'AUTHORIZATION_HEADER',
                     value: 'Bearer ' + authToken,

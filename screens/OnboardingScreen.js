@@ -85,7 +85,7 @@ const OnboardingScreen = props => {
               {'Add a child to get started'}
             </Text>
           </View>
-
+          {/* AddChildForm */}
           <View style={styles(theme).Viewcf512171}>
             <TextInput
               onChangeText={newTextInputValue => {

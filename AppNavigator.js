@@ -12,6 +12,8 @@ import ChildlistScreen from './screens/ChildlistScreen';
 import LoginScreen from './screens/LoginScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import RewardsScreen from './screens/RewardsScreen';
+import TasksScreen from './screens/TasksScreen';
 import WalletScreen from './screens/WalletScreen';
 
 const Stack = createStackNavigator();
@@ -67,6 +69,68 @@ function Placeholder() {
     </View>
   );
 }
+function BottomNav() {
+  return (
+    <Tab.Navigator
+      initialRouteName="WalletScreen"
+      tabBarOptions={{
+        inactiveTintColor: theme.colors['Background'],
+        labelStyle: theme.typography.custom27,
+        style: {
+          backgroundColor: theme.colors['Strong'],
+          borderTopColor: null,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="WalletScreen"
+        component={WalletScreen}
+        options={{
+          title: 'Wallet',
+          tabBarIcon: ({ focused, color }) => (
+            <Icon
+              name="Ionicons/wallet-outline"
+              size={25}
+              color={focused ? color : color}
+            />
+          ),
+          tabBarLabel: 'wallet',
+        }}
+      />
+      <Tab.Screen
+        name="TasksScreen"
+        component={TasksScreen}
+        options={{
+          title: 'Tasks',
+          tabBarIcon: ({ focused, color }) => (
+            <Icon
+              name="Ionicons/md-list"
+              size={25}
+              color={focused ? color : color}
+            />
+          ),
+          tabBarLabel: 'tasks',
+        }}
+      />
+      <Tab.Screen
+        name="RewardsScreen"
+        component={RewardsScreen}
+        options={{
+          title: 'Rewards',
+          tabBarIcon: ({ focused, color }) => (
+            <Icon
+              name="Ionicons/star-outline"
+              size={25}
+              color={focused ? color : color}
+            />
+          ),
+          tabBarLabel: 'rewards',
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
 export default function RootAppNavigator() {
   return (
     <NavigationContainer linking={LinkingConfiguration}>
@@ -99,11 +163,7 @@ export default function RootAppNavigator() {
           component={ChildlistScreen}
           options={{ title: 'Childlist' }}
         />
-        <Stack.Screen
-          name="WalletScreen"
-          component={WalletScreen}
-          options={{ title: 'Wallet' }}
-        />
+        <Stack.Screen name="BottomNav" component={BottomNav} />
       </Stack.Navigator>
     </NavigationContainer>
   );
