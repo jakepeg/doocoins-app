@@ -102,8 +102,8 @@ const ChildlistScreen = props => {
       </View>
       {/* Child list */}
       <View>
-        <DooCoinsAPIApi.FetchChildListGET>
-          {({ loading, error, data, refetchChildList }) => {
+        <DooCoinsAPIApi.FetchGetChildrenGET Parent_ID={Constants['Parent_ID']}>
+          {({ loading, error, data, refetchGetChildren }) => {
             const fetchData = data;
             if (!fetchData || loading) {
               return <ActivityIndicator />;
@@ -139,7 +139,7 @@ const ChildlistScreen = props => {
                               key: 'Child_ID',
                               value: listData?.id,
                             });
-                            navigation.navigate('WalletScreen');
+                            navigation.navigate('BottomNav');
                           } catch (err) {
                             console.error(err);
                           }
@@ -180,7 +180,7 @@ const ChildlistScreen = props => {
               </ScrollView>
             );
           }}
-        </DooCoinsAPIApi.FetchChildListGET>
+        </DooCoinsAPIApi.FetchGetChildrenGET>
       </View>
       {/* AddChildForm */}
       <View style={GlobalStyles.ViewStyles(theme)['AddChildForm']}>

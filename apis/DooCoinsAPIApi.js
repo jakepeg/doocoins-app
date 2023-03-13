@@ -143,6 +143,70 @@ export const FetchChildListGET = ({
   return children({ loading, data, error, refetchChildList: refetch });
 };
 
+export const getChildrenGET = (Constants, { Parent_ID }) =>
+  fetch(
+    `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/childrenforparent2/${
+      Parent_ID ?? ''
+    }`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useGetChildrenGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues();
+  return useQuery(['children', args], () => getChildrenGET(Constants, args), {
+    refetchInterval,
+  });
+};
+
+export const FetchGetChildrenGET = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Parent_ID,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const { loading, data, error, refetch } = useGetChildrenGET(
+    { Parent_ID },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchGetChildren: refetch });
+};
+
 export const getLoggedInUserGET = Constants =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/auth/me`, {
     headers: {
