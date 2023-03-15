@@ -29,6 +29,8 @@ const queryClient = new QueryClient();
 const App = () => {
   const [isReady, setIsReady] = React.useState(false);
   const [fontsLoaded] = useFonts({
+    Roboto_300Light:
+      'https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf',
     Roboto_400Regular:
       'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf',
     Roboto_700Bold:

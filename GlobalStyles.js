@@ -38,6 +38,9 @@ export const ImageStyles = theme =>
 
 export const FlatListStyles = theme => StyleSheet.create({ List: { flex: 1 } });
 
+export const SVGStyles = theme =>
+  StyleSheet.create({ SVG: { height: 100, width: 100 } });
+
 export const SwiperStyles = theme =>
   StyleSheet.create({ Swiper: { height: 300, width: '100%' } });
 

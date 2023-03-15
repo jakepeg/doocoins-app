@@ -73,11 +73,11 @@ const ChildlistScreen = props => {
                 key: 'AUTHORIZATION_HEADER',
                 value: '',
               });
-              navigation.navigate('LoginScreen');
               setGlobalVariableValue({
                 key: 'Parent_ID',
                 value: '',
               });
+              navigation.navigate('LoginScreen');
             } catch (err) {
               console.error(err);
             }

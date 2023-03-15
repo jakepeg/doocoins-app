@@ -13,6 +13,7 @@ import LoginScreen from './screens/LoginScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import RewardsScreen from './screens/RewardsScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import TasksScreen from './screens/TasksScreen';
 import WalletScreen from './screens/WalletScreen';
 
@@ -162,6 +163,11 @@ export default function RootAppNavigator() {
           name="ChildlistScreen"
           component={ChildlistScreen}
           options={{ title: 'Childlist' }}
+        />
+        <Stack.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{ title: 'Settings' }}
         />
         <Stack.Screen name="BottomNav" component={BottomNav} />
       </Stack.Navigator>
