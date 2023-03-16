@@ -10,6 +10,12 @@ export const ViewStyles = theme =>
       marginTop: 20,
       width: '100%',
     },
+    Header: {
+      alignItems: 'flex-end',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 10,
+    },
   });
 
 export const ButtonStyles = theme =>

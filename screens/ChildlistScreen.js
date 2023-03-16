@@ -3,7 +3,13 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
-import { Button, ScreenContainer, Touchable, withTheme } from '@draftbit/ui';
+import {
+  Button,
+  IconButton,
+  ScreenContainer,
+  Touchable,
+  withTheme,
+} from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   ActivityIndicator,
@@ -57,7 +63,8 @@ const ChildlistScreen = props => {
       hasSafeArea={false}
     >
       {/* Header */}
-      <View style={styles(theme).Viewf78a9190}>
+      <View style={styles(theme).Viewd6f729d6}>
+        {/* Logo */}
         <Image
           style={[
             GlobalStyles.ImageStyles(theme)['Image'],
@@ -66,27 +73,19 @@ const ChildlistScreen = props => {
           resizeMode={'cover'}
           source={Images.DooLogoWhite}
         />
-        <Button
+        {/* Settings */}
+        <IconButton
           onPress={() => {
             try {
-              setGlobalVariableValue({
-                key: 'AUTHORIZATION_HEADER',
-                value: '',
-              });
-              setGlobalVariableValue({
-                key: 'Parent_ID',
-                value: '',
-              });
-              navigation.navigate('LoginScreen');
+              navigation.navigate('SettingsScreen');
             } catch (err) {
               console.error(err);
             }
           }}
-          style={[
-            GlobalStyles.ButtonStyles(theme)['Button'],
-            styles(theme).Button900795f6,
-          ]}
-          title={'Logout'}
+          style={styles(theme).IconButtona6665474}
+          icon={'Ionicons/settings-sharp'}
+          color={theme.colors['White']}
+          size={24}
         />
       </View>
       {/* Title */}
@@ -240,18 +239,6 @@ const ChildlistScreen = props => {
 
 const styles = theme =>
   StyleSheet.create({
-    Button900795f6: {
-      backgroundColor: '"rgba(0, 0, 0, 0)"',
-      color: theme.colors['Light Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 12,
-      height: 15,
-      marginRight: 7,
-      paddingTop: 10,
-      textAlign: 'center',
-      textDecorationLine: 'underline',
-      width: 60,
-    },
     Buttonc6389ac7: {
       fontFamily: 'Roboto_400Regular',
       fontSize: 26,
@@ -259,6 +246,7 @@ const styles = theme =>
       marginTop: 20,
       width: '80%',
     },
+    IconButtona6665474: { right: 20, top: 3 },
     Imagec4d7b6b4: { height: 20, marginLeft: 15, width: 30 },
     Text0759f2cf: {
       color: theme.colors['Light Inverse'],
@@ -301,10 +289,11 @@ const styles = theme =>
       justifyContent: 'space-between',
       margin: 20,
     },
-    Viewf78a9190: {
+    Viewd6f729d6: {
       alignItems: 'flex-end',
       flexDirection: 'row',
       justifyContent: 'space-between',
+      marginTop: 10,
     },
     screen: { backgroundColor: theme.colors['Strong'] },
   });

@@ -3,9 +3,16 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
-import { Button, ScreenContainer, withTheme } from '@draftbit/ui';
+import { IconButton, ScreenContainer, withTheme } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Fetch } from 'react-request';
 
 const WalletScreen = props => {
@@ -17,12 +24,44 @@ const WalletScreen = props => {
 
   return (
     <ScreenContainer scrollable={false} hasSafeArea={false}>
+      {/* Header */}
+      <View
+        style={[
+          GlobalStyles.ViewStyles(theme)['Header'],
+          styles(theme).View627b952a,
+        ]}
+      >
+        {/* Logo */}
+        <Image
+          style={[
+            GlobalStyles.ImageStyles(theme)['Image'],
+            styles(theme).Imagec4d7b6b4,
+          ]}
+          resizeMode={'cover'}
+          source={Images.DooLogoWhite}
+        />
+        {/* Settings */}
+        <IconButton
+          onPress={() => {
+            try {
+              navigation.navigate('SettingsScreen');
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+          style={styles(theme).IconButton2be0f685}
+          icon={'Ionicons/settings-sharp'}
+          color={theme.colors['White']}
+          size={24}
+        />
+      </View>
+      {/* Balance */}
       <>
         {!Constants['Child_ID'] ? null : (
           <DooCoinsAPIApi.FetchGetChildGET children_id={Constants['Child_ID']}>
             {({ loading, error, data, refetchGetChild }) => {
-              const fetchData = data;
-              if (!fetchData || loading) {
+              const balanceData = data;
+              if (!balanceData || loading) {
                 return <ActivityIndicator />;
               }
 
@@ -37,14 +76,14 @@ const WalletScreen = props => {
               return (
                 <View style={styles(theme).Viewd642e67a}>
                   <>
-                    {!fetchData?.name ? null : (
+                    {!balanceData?.name ? null : (
                       <Text
                         style={[
                           GlobalStyles.TextStyles(theme)['Text'],
-                          styles(theme).Text5e45f235,
+                          styles(theme).Text5b465090,
                         ]}
                       >
-                        {fetchData?.name}
+                        {balanceData?.name}
                       </Text>
                     )}
                   </>
@@ -63,7 +102,7 @@ const WalletScreen = props => {
                         styles(theme).Text3fb33371,
                       ]}
                     >
-                      {fetchData?.balance}
+                      {balanceData?.balance}
                     </Text>
                   </View>
                 </View>
@@ -72,67 +111,103 @@ const WalletScreen = props => {
           </DooCoinsAPIApi.FetchGetChildGET>
         )}
       </>
-      <View>
-        <Text
-          style={[
-            GlobalStyles.TextStyles(theme)['Text'],
-            styles(theme).Textec108e08,
-          ]}
-        >
-          {'parent id = '}
-          {Constants['Parent_ID']}
-        </Text>
+      {/* Transactions */}
+      <DooCoinsAPIApi.FetchGetTransactionsGET child_id={Constants['Child_ID']}>
+        {({ loading, error, data, refetchGetTransactions }) => {
+          const transactionsData = data;
+          if (!transactionsData || loading) {
+            return <ActivityIndicator />;
+          }
 
-        <Text
-          style={[
-            GlobalStyles.TextStyles(theme)['Text'],
-            styles(theme).Textec108e08,
-          ]}
-        >
-          {'child id = '}
-          {Constants['Child_ID']}
-        </Text>
-        <Button
-          onPress={() => {
-            try {
-              navigation.navigate('ChildlistScreen');
-            } catch (err) {
-              console.error(err);
-            }
-          }}
-          style={[
-            GlobalStyles.ButtonStyles(theme)['Button'],
-            styles(theme).Buttonffb3e65c,
-          ]}
-          title={'Child list'}
-        />
-      </View>
+          if (error) {
+            return (
+              <Text style={{ textAlign: 'center' }}>
+                There was a problem fetching this data
+              </Text>
+            );
+          }
+
+          return (
+            <FlatList
+              data={transactionsData}
+              listKey={'R64IJv2V'}
+              keyExtractor={listData =>
+                listData?.id || listData?.uuid || JSON.stringify(listData)
+              }
+              renderItem={({ item }) => {
+                const listData = item;
+                return (
+                  <View>
+                    {/* Date */}
+                    <Text style={GlobalStyles.TextStyles(theme)['Text']}>
+                      {new Date(listData?.created_at)}
+                    </Text>
+                    {/* Name */}
+                    <>
+                      {!listData?.name ? null : (
+                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
+                          {'Double click me to edit 👀'}
+                        </Text>
+                      )}
+                    </>
+                    {/* Plus_Minus */}
+                    <>
+                      {!listData?.plus_minus ? null : (
+                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
+                          {'Double click me to edit 👀'}
+                        </Text>
+                      )}
+                    </>
+                    {/* Value */}
+                    <>
+                      {!listData?.value ? null : (
+                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
+                          {'Double click me to edit 👀'}
+                        </Text>
+                      )}
+                    </>
+                  </View>
+                );
+              }}
+              style={GlobalStyles.FlatListStyles(theme)['List']}
+              contentContainerStyle={GlobalStyles.FlatListStyles(theme)['List']}
+              numColumns={1}
+              onEndReachedThreshold={0.5}
+              showsHorizontalScrollIndicator={true}
+              showsVerticalScrollIndicator={true}
+            />
+          );
+        }}
+      </DooCoinsAPIApi.FetchGetTransactionsGET>
     </ScreenContainer>
   );
 };
 
 const styles = theme =>
   StyleSheet.create({
-    Buttonffb3e65c: { margin: 50 },
+    IconButton2be0f685: { right: 10, top: 3 },
     Imagebb75def3: { height: 50, marginTop: 14, width: 50 },
+    Imagec4d7b6b4: { height: 20, marginLeft: 15, width: 30 },
     Text3fb33371: {
       color: 'rgb(255, 255, 255)',
       fontFamily: 'Roboto_300Light',
       fontSize: 66,
     },
-    Text5e45f235: {
+    Text5b465090: {
       color: 'rgb(255, 255, 255)',
       fontFamily: 'Roboto_400Regular',
-      fontSize: 24,
+      fontSize: 32,
       marginBottom: 10,
       marginTop: 25,
       textAlign: 'center',
     },
-    Textec108e08: {
-      color: theme.colors['Error'],
-      fontFamily: 'Roboto_400Regular',
-      marginTop: 100,
-      textAlign: 'center',
+    View627b952a: {
+      alignItems: 'center',
+      backgroundColor: theme.colors['Strong'],
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 0,
+      paddingTop: 10,
     },
     View863e7c01: { flexDirection: 'row', justifyContent: 'center' },
     Viewd642e67a: {
