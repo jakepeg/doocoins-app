@@ -1,8 +1,18 @@
-import { StyleSheet } from 'react-native';
+import * as StyleSheet from './utils/StyleSheet';
+
+import Breakpoints from './utils/Breakpoints';
 
 export const ViewStyles = theme =>
   StyleSheet.create({
     AddChildForm: {
+      alignContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      backgroundColor: theme.colors['Strong'],
+      marginTop: 20,
+      width: '100%',
+    },
+    'AddChildForm 2': {
       alignContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',

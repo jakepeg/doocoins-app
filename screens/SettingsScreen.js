@@ -1,15 +1,18 @@
 import React from 'react';
 import * as GlobalStyles from '../GlobalStyles.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
+import Breakpoints from '../utils/Breakpoints';
+import * as StyleSheet from '../utils/StyleSheet';
 import {
   IconButton,
   ScreenContainer,
   Touchable,
   withTheme,
 } from '@draftbit/ui';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, useWindowDimensions } from 'react-native';
 
 const SettingsScreen = props => {
+  const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
   const setGlobalVariableValue = GlobalVariables.useSetValue();
@@ -44,13 +47,22 @@ const SettingsScreen = props => {
           }
         }}
       >
-        <View style={styles(theme).Viewb1bb98cf}>
+        <View
+          style={StyleSheet.applyWidth(
+            { alignItems: 'center', flexDirection: 'row', margin: 20 },
+            dimensions.width
+          )}
+        >
           <IconButton size={32} icon={'Ionicons/people'} />
           <Text
-            style={[
-              GlobalStyles.TextStyles(theme)['Text'],
-              styles(theme).Text73383357,
-            ]}
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                fontFamily: 'Roboto_400Regular',
+                fontSize: 20,
+                marginLeft: 20,
+              }),
+              dimensions.width
+            )}
           >
             {'My Children'}
           </Text>
@@ -74,13 +86,22 @@ const SettingsScreen = props => {
           }
         }}
       >
-        <View style={styles(theme).Viewb1bb98cf}>
+        <View
+          style={StyleSheet.applyWidth(
+            { alignItems: 'center', flexDirection: 'row', margin: 20 },
+            dimensions.width
+          )}
+        >
           <IconButton size={32} icon={'Ionicons/log-out-outline'} />
           <Text
-            style={[
-              GlobalStyles.TextStyles(theme)['Text'],
-              styles(theme).Text73383357,
-            ]}
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                fontFamily: 'Roboto_400Regular',
+                fontSize: 20,
+                marginLeft: 20,
+              }),
+              dimensions.width
+            )}
           >
             {'Logout'}
           </Text>
@@ -89,15 +110,5 @@ const SettingsScreen = props => {
     </ScreenContainer>
   );
 };
-
-const styles = theme =>
-  StyleSheet.create({
-    Text73383357: {
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 20,
-      marginLeft: 20,
-    },
-    Viewb1bb98cf: { alignItems: 'center', flexDirection: 'row', margin: 20 },
-  });
 
 export default withTheme(SettingsScreen);

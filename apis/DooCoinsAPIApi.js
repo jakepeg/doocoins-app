@@ -10,6 +10,257 @@ import { useIsFocused } from '@react-navigation/native';
 import usePrevious from '../utils/usePrevious';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 
+export const addRewardPOST = (
+  Constants,
+  { Child_ID, reward_name, reward_value }
+) =>
+  fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/rewards`, {
+    body: JSON.stringify({
+      name: reward_name,
+      value: reward_value,
+      children_id: Child_ID,
+    }),
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'POST',
+  })
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useAddRewardPOST = initialArgs => {
+  const queryClient = useQueryClient();
+  const Constants = GlobalVariables.useValues();
+
+  return useMutation(
+    args => addRewardPOST(Constants, { ...initialArgs, ...args }),
+    {
+      onError: (err, variables, { previousValue }) => {
+        if (previousValue) {
+          return queryClient.setQueryData('rewards', previousValue);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('reward');
+        queryClient.invalidateQueries('rewards');
+      },
+    }
+  );
+};
+
+export const FetchAddRewardPOST = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+  reward_name,
+  reward_value,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    loading,
+    data,
+    error,
+    mutate: refetch,
+  } = useAddRewardPOST(
+    { Child_ID, reward_name, reward_value },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchAddReward: refetch });
+};
+
+export const addTaskPOST = (Constants, { Child_ID, task_name, task_value }) =>
+  fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/tasks`, {
+    body: JSON.stringify({
+      name: task_name,
+      value: task_value,
+      children_id: Child_ID,
+    }),
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'POST',
+  })
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useAddTaskPOST = initialArgs => {
+  const queryClient = useQueryClient();
+  const Constants = GlobalVariables.useValues();
+
+  return useMutation(
+    args => addTaskPOST(Constants, { ...initialArgs, ...args }),
+    {
+      onError: (err, variables, { previousValue }) => {
+        if (previousValue) {
+          return queryClient.setQueryData('tasks', previousValue);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('task');
+        queryClient.invalidateQueries('tasks');
+      },
+    }
+  );
+};
+
+export const FetchAddTaskPOST = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+  task_name,
+  task_value,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    loading,
+    data,
+    error,
+    mutate: refetch,
+  } = useAddTaskPOST({ Child_ID, task_name, task_value }, { refetchInterval });
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchAddTask: refetch });
+};
+
+export const addTaskTransactionPOST = (
+  Constants,
+  { Child_ID, plus_minus, transaction_name, transaction_value }
+) =>
+  fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/transactions`, {
+    body: JSON.stringify({
+      name: transaction_name,
+      plus_minus: plus_minus,
+      value: transaction_value,
+      children_id: Child_ID,
+    }),
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'POST',
+  })
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useAddTaskTransactionPOST = initialArgs => {
+  const queryClient = useQueryClient();
+  const Constants = GlobalVariables.useValues();
+
+  return useMutation(
+    args => addTaskTransactionPOST(Constants, { ...initialArgs, ...args }),
+    {
+      onError: (err, variables, { previousValue }) => {
+        if (previousValue) {
+          return queryClient.setQueryData('transactions', previousValue);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('transaction');
+        queryClient.invalidateQueries('transactions');
+      },
+    }
+  );
+};
+
+export const FetchAddTaskTransactionPOST = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+  plus_minus,
+  transaction_name,
+  transaction_value,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    loading,
+    data,
+    error,
+    mutate: refetch,
+  } = useAddTaskTransactionPOST(
+    { Child_ID, plus_minus, transaction_name, transaction_value },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchAddTaskTransaction: refetch });
+};
+
 export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children`, {
     body: JSON.stringify({
@@ -271,6 +522,134 @@ export const FetchGetChildrenGET = ({
   }, [data]);
 
   return children({ loading, data, error, refetchGetChildren: refetch });
+};
+
+export const getRewardsGET = (Constants, { Child_ID }) =>
+  fetch(
+    `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildrewards/${
+      Child_ID ?? ''
+    }`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useGetRewardsGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues();
+  return useQuery(['rewards', args], () => getRewardsGET(Constants, args), {
+    refetchInterval,
+  });
+};
+
+export const FetchGetRewardsGET = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const { loading, data, error, refetch } = useGetRewardsGET(
+    { Child_ID },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchGetRewards: refetch });
+};
+
+export const getTasksGET = (Constants, { child_id }) =>
+  fetch(
+    `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildtasks/${
+      child_id ?? ''
+    }`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useGetTasksGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues();
+  return useQuery(['tasks', args], () => getTasksGET(Constants, args), {
+    refetchInterval,
+  });
+};
+
+export const FetchGetTasksGET = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  child_id,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const { loading, data, error, refetch } = useGetTasksGET(
+    { child_id },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchGetTasks: refetch });
 };
 
 export const getTransactionsGET = (Constants, { child_id }) =>
@@ -578,4 +957,116 @@ export const FetchSignUpPOST = ({
   }, [data]);
 
   return children({ loading, data, error, refetchSignUp: refetch });
+};
+
+export const updateChildBalancePOST = (
+  Constants,
+  {
+    Child_ID,
+    Parent_ID,
+    Selected_Child_Balance,
+    Selected_Child_Name,
+    Selected_Child_Reward,
+    children_id,
+  }
+) =>
+  fetch(
+    `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children/${
+      children_id ?? ''
+    }`,
+    {
+      body: JSON.stringify({
+        children_id: Child_ID,
+        name: Selected_Child_Name,
+        parents_id: Parent_ID,
+        rewards_id: Selected_Child_Reward,
+        balance: Selected_Child_Balance,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    }
+  )
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useUpdateChildBalancePOST = initialArgs => {
+  const queryClient = useQueryClient();
+  const Constants = GlobalVariables.useValues();
+
+  return useMutation(
+    args => updateChildBalancePOST(Constants, { ...initialArgs, ...args }),
+    {
+      onError: (err, variables, { previousValue }) => {
+        if (previousValue) {
+          return queryClient.setQueryData('children', previousValue);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('child');
+        queryClient.invalidateQueries('children');
+      },
+    }
+  );
+};
+
+export const FetchUpdateChildBalancePOST = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+  Parent_ID,
+  Selected_Child_Balance,
+  Selected_Child_Name,
+  Selected_Child_Reward,
+  children_id,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    loading,
+    data,
+    error,
+    mutate: refetch,
+  } = useUpdateChildBalancePOST(
+    {
+      Child_ID,
+      Parent_ID,
+      Selected_Child_Balance,
+      Selected_Child_Name,
+      Selected_Child_Reward,
+      children_id,
+    },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchUpdateChildBalance: refetch });
 };

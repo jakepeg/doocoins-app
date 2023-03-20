@@ -3,21 +3,31 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import Breakpoints from '../utils/Breakpoints';
+import * as StyleSheet from '../utils/StyleSheet';
 import { IconButton, ScreenContainer, withTheme } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   ActivityIndicator,
   FlatList,
   Image,
-  StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { Fetch } from 'react-request';
 
 const WalletScreen = props => {
+  const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
+
+  const humanReadableDate = time => {
+    return new Date(time).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 
   const { theme } = props;
   const { navigation } = props;
@@ -26,17 +36,26 @@ const WalletScreen = props => {
     <ScreenContainer scrollable={false} hasSafeArea={false}>
       {/* Header */}
       <View
-        style={[
-          GlobalStyles.ViewStyles(theme)['Header'],
-          styles(theme).View627b952a,
-        ]}
+        style={StyleSheet.applyWidth(
+          StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Header'], {
+            alignItems: 'center',
+            backgroundColor: theme.colors['Strong'],
+            marginTop: 0,
+            paddingTop: 10,
+          }),
+          dimensions.width
+        )}
       >
         {/* Logo */}
         <Image
-          style={[
-            GlobalStyles.ImageStyles(theme)['Image'],
-            styles(theme).Imagec4d7b6b4,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+              height: 20,
+              marginLeft: 15,
+              width: 30,
+            }),
+            dimensions.width
+          )}
           resizeMode={'cover'}
           source={Images.DooLogoWhite}
         />
@@ -49,172 +68,283 @@ const WalletScreen = props => {
               console.error(err);
             }
           }}
-          style={styles(theme).IconButton2be0f685}
+          style={StyleSheet.applyWidth({ right: 10, top: 3 }, dimensions.width)}
           icon={'Ionicons/settings-sharp'}
           color={theme.colors['White']}
           size={24}
         />
       </View>
-      {/* Balance */}
-      <>
-        {!Constants['Child_ID'] ? null : (
-          <DooCoinsAPIApi.FetchGetChildGET children_id={Constants['Child_ID']}>
-            {({ loading, error, data, refetchGetChild }) => {
-              const balanceData = data;
-              if (!balanceData || loading) {
-                return <ActivityIndicator />;
-              }
+      {/* Ballance */}
+      <View>
+        {/* Balance */}
+        <>
+          {!Constants['Child_ID'] ? null : (
+            <DooCoinsAPIApi.FetchGetChildGET
+              children_id={Constants['Child_ID']}
+            >
+              {({ loading, error, data, refetchGetChild }) => {
+                const balanceData = data;
+                if (!balanceData || loading) {
+                  return <ActivityIndicator />;
+                }
 
-              if (error) {
+                if (error) {
+                  return (
+                    <Text style={{ textAlign: 'center' }}>
+                      There was a problem fetching this data
+                    </Text>
+                  );
+                }
+
                 return (
-                  <Text style={{ textAlign: 'center' }}>
-                    There was a problem fetching this data
-                  </Text>
-                );
-              }
-
-              return (
-                <View style={styles(theme).Viewd642e67a}>
-                  <>
-                    {!balanceData?.name ? null : (
-                      <Text
-                        style={[
-                          GlobalStyles.TextStyles(theme)['Text'],
-                          styles(theme).Text5b465090,
-                        ]}
-                      >
-                        {balanceData?.name}
-                      </Text>
+                  <View
+                    style={StyleSheet.applyWidth(
+                      {
+                        backgroundColor: theme.colors['Strong'],
+                        height: 170,
+                        width: '100%',
+                      },
+                      dimensions.width
                     )}
-                  </>
-                  <View style={styles(theme).View863e7c01}>
-                    <Image
-                      style={[
-                        GlobalStyles.ImageStyles(theme)['Image'],
-                        styles(theme).Imagebb75def3,
-                      ]}
-                      resizeMode={'cover'}
-                      source={Images.DCSymbol}
-                    />
-                    <Text
-                      style={[
-                        GlobalStyles.TextStyles(theme)['Text'],
-                        styles(theme).Text3fb33371,
-                      ]}
+                  >
+                    <>
+                      {!balanceData?.name ? null : (
+                        <Text
+                          style={StyleSheet.applyWidth(
+                            StyleSheet.compose(
+                              GlobalStyles.TextStyles(theme)['Text'],
+                              {
+                                color: 'rgb(255, 255, 255)',
+                                fontFamily: 'Roboto_400Regular',
+                                fontSize: 32,
+                                marginBottom: 10,
+                                marginTop: 25,
+                                textAlign: 'center',
+                              }
+                            ),
+                            dimensions.width
+                          )}
+                        >
+                          {balanceData?.name}
+                        </Text>
+                      )}
+                    </>
+                    <View
+                      style={StyleSheet.applyWidth(
+                        { flexDirection: 'row', justifyContent: 'center' },
+                        dimensions.width
+                      )}
                     >
-                      {balanceData?.balance}
-                    </Text>
-                  </View>
-                </View>
-              );
-            }}
-          </DooCoinsAPIApi.FetchGetChildGET>
-        )}
-      </>
-      {/* Transactions */}
-      <DooCoinsAPIApi.FetchGetTransactionsGET child_id={Constants['Child_ID']}>
-        {({ loading, error, data, refetchGetTransactions }) => {
-          const transactionsData = data;
-          if (!transactionsData || loading) {
-            return <ActivityIndicator />;
-          }
-
-          if (error) {
-            return (
-              <Text style={{ textAlign: 'center' }}>
-                There was a problem fetching this data
-              </Text>
-            );
-          }
-
-          return (
-            <FlatList
-              data={transactionsData}
-              listKey={'R64IJv2V'}
-              keyExtractor={listData =>
-                listData?.id || listData?.uuid || JSON.stringify(listData)
-              }
-              renderItem={({ item }) => {
-                const listData = item;
-                return (
-                  <View>
-                    {/* Date */}
-                    <Text style={GlobalStyles.TextStyles(theme)['Text']}>
-                      {new Date(listData?.created_at)}
-                    </Text>
-                    {/* Name */}
-                    <>
-                      {!listData?.name ? null : (
-                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
-                          {'Double click me to edit 👀'}
-                        </Text>
-                      )}
-                    </>
-                    {/* Plus_Minus */}
-                    <>
-                      {!listData?.plus_minus ? null : (
-                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
-                          {'Double click me to edit 👀'}
-                        </Text>
-                      )}
-                    </>
-                    {/* Value */}
-                    <>
-                      {!listData?.value ? null : (
-                        <Text style={GlobalStyles.TextStyles(theme)['Text']}>
-                          {'Double click me to edit 👀'}
-                        </Text>
-                      )}
-                    </>
+                      <Image
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.ImageStyles(theme)['Image'],
+                            { height: 50, marginTop: 14, width: 50 }
+                          ),
+                          dimensions.width
+                        )}
+                        resizeMode={'cover'}
+                        source={Images.DCSymbol}
+                      />
+                      <Text
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'],
+                            {
+                              color: 'rgb(255, 255, 255)',
+                              fontFamily: 'Roboto_300Light',
+                              fontSize: 66,
+                            }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {balanceData?.balance}
+                      </Text>
+                    </View>
                   </View>
                 );
               }}
-              style={GlobalStyles.FlatListStyles(theme)['List']}
-              contentContainerStyle={GlobalStyles.FlatListStyles(theme)['List']}
-              numColumns={1}
-              onEndReachedThreshold={0.5}
-              showsHorizontalScrollIndicator={true}
-              showsVerticalScrollIndicator={true}
-            />
-          );
-        }}
-      </DooCoinsAPIApi.FetchGetTransactionsGET>
+            </DooCoinsAPIApi.FetchGetChildGET>
+          )}
+        </>
+      </View>
+
+      <Text
+        style={StyleSheet.applyWidth(
+          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+            color: theme.colors['Light'],
+            fontFamily: 'Roboto_400Regular',
+            fontSize: 24,
+            margin: 20,
+            textAlign: 'center',
+          }),
+          dimensions.width
+        )}
+      >
+        {'Transactions'}
+      </Text>
+      {/* Transactions */}
+      <View>
+        {/* Transactions */}
+        <DooCoinsAPIApi.FetchGetTransactionsGET
+          child_id={Constants['Child_ID']}
+        >
+          {({ loading, error, data, refetchGetTransactions }) => {
+            const transactionsData = data;
+            if (!transactionsData || loading) {
+              return <ActivityIndicator />;
+            }
+
+            if (error) {
+              return (
+                <Text style={{ textAlign: 'center' }}>
+                  There was a problem fetching this data
+                </Text>
+              );
+            }
+
+            return (
+              <FlatList
+                data={transactionsData}
+                listKey={'3mib1bzO'}
+                keyExtractor={listData =>
+                  listData?.id || listData?.uuid || JSON.stringify(listData)
+                }
+                renderItem={({ item }) => {
+                  const listData = item;
+                  return (
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          margin: 20,
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* Date */}
+                      <Text
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'],
+                            {
+                              alignSelf: 'flex-start',
+                              color: theme.colors['Light'],
+                              fontFamily: 'Roboto_400Regular',
+                              fontSize: 18,
+                            }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {humanReadableDate(listData?.created_at)}
+                      </Text>
+
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        {/* Name */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { alignItems: 'flex-start', flexDirection: 'row' },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Name */}
+                          <Text
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'],
+                                {
+                                  alignSelf: 'flex-start',
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 24,
+                                  textAlign: 'left',
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {listData?.name}
+                          </Text>
+                        </View>
+                        {/* Amount */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { flexDirection: 'row' },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Plus_Minus */}
+                          <>
+                            {!listData?.plus_minus ? null : (
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text'],
+                                    {
+                                      fontFamily: 'Roboto_400Regular',
+                                      fontSize: 24,
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {listData?.plus_minus}
+                              </Text>
+                            )}
+                          </>
+                          {/* Value */}
+                          <Text
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'],
+                                {
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 24,
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {listData?.value}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  );
+                }}
+                style={StyleSheet.applyWidth(
+                  GlobalStyles.FlatListStyles(theme)['List'],
+                  dimensions.width
+                )}
+                contentContainerStyle={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.FlatListStyles(theme)['List'],
+                    { alignSelf: 'stretch', flexDirection: 'column' }
+                  ),
+                  dimensions.width
+                )}
+                numColumns={1}
+                onEndReachedThreshold={0.5}
+                showsHorizontalScrollIndicator={true}
+                showsVerticalScrollIndicator={true}
+                inverted={true}
+              />
+            );
+          }}
+        </DooCoinsAPIApi.FetchGetTransactionsGET>
+      </View>
     </ScreenContainer>
   );
 };
-
-const styles = theme =>
-  StyleSheet.create({
-    IconButton2be0f685: { right: 10, top: 3 },
-    Imagebb75def3: { height: 50, marginTop: 14, width: 50 },
-    Imagec4d7b6b4: { height: 20, marginLeft: 15, width: 30 },
-    Text3fb33371: {
-      color: 'rgb(255, 255, 255)',
-      fontFamily: 'Roboto_300Light',
-      fontSize: 66,
-    },
-    Text5b465090: {
-      color: 'rgb(255, 255, 255)',
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 32,
-      marginBottom: 10,
-      marginTop: 25,
-      textAlign: 'center',
-    },
-    View627b952a: {
-      alignItems: 'center',
-      backgroundColor: theme.colors['Strong'],
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 0,
-      paddingTop: 10,
-    },
-    View863e7c01: { flexDirection: 'row', justifyContent: 'center' },
-    Viewd642e67a: {
-      backgroundColor: theme.colors['Strong'],
-      height: 170,
-      width: '100%',
-    },
-  });
 
 export default withTheme(WalletScreen);

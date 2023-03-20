@@ -3,6 +3,8 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import Breakpoints from '../utils/Breakpoints';
+import * as StyleSheet from '../utils/StyleSheet';
 import {
   Button,
   IconButton,
@@ -16,14 +18,15 @@ import {
   FlatList,
   Image,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { Fetch } from 'react-request';
 
 const ChildlistScreen = props => {
+  const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
   const setGlobalVariableValue = GlobalVariables.useSetValue();
@@ -58,18 +61,35 @@ const ChildlistScreen = props => {
 
   return (
     <ScreenContainer
-      style={styles(theme).screen}
+      style={StyleSheet.applyWidth(
+        { backgroundColor: theme.colors['Strong'] },
+        dimensions.width
+      )}
       scrollable={false}
       hasSafeArea={false}
     >
       {/* Header */}
-      <View style={styles(theme).Viewd6f729d6}>
+      <View
+        style={StyleSheet.applyWidth(
+          {
+            alignItems: 'flex-end',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 10,
+          },
+          dimensions.width
+        )}
+      >
         {/* Logo */}
         <Image
-          style={[
-            GlobalStyles.ImageStyles(theme)['Image'],
-            styles(theme).Imagec4d7b6b4,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+              height: 20,
+              marginLeft: 15,
+              width: 30,
+            }),
+            dimensions.width
+          )}
           resizeMode={'cover'}
           source={Images.DooLogoWhite}
         />
@@ -82,7 +102,7 @@ const ChildlistScreen = props => {
               console.error(err);
             }
           }}
-          style={styles(theme).IconButtona6665474}
+          style={StyleSheet.applyWidth({ right: 20, top: 3 }, dimensions.width)}
           icon={'Ionicons/settings-sharp'}
           color={theme.colors['White']}
           size={24}
@@ -91,10 +111,16 @@ const ChildlistScreen = props => {
       {/* Title */}
       <View>
         <Text
-          style={[
-            GlobalStyles.TextStyles(theme)['Text'],
-            styles(theme).Text62985bff,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+              color: theme.colors['Strong Inverse'],
+              fontFamily: 'Roboto_400Regular',
+              fontSize: 26,
+              marginTop: 20,
+              textAlign: 'center',
+            }),
+            dimensions.width
+          )}
         >
           {'My children'}
         </Text>
@@ -138,28 +164,67 @@ const ChildlistScreen = props => {
                               key: 'Child_ID',
                               value: listData?.id,
                             });
+                            setGlobalVariableValue({
+                              key: 'Selected_Child_Balance',
+                              value: listData?.balance,
+                            });
+                            console.log(Constants['Child_ID']);
+                            setGlobalVariableValue({
+                              key: 'Selected_Child_Name',
+                              value: listData?.name,
+                            });
+                            console.log(Constants['Selected_Child_Name']);
+                            setGlobalVariableValue({
+                              key: 'Selected_Child_Reward',
+                              value: listData?.rewards_id,
+                            });
+                            console.log(Constants['Selected_Child_Reward']);
                             navigation.navigate('BottomNav');
                           } catch (err) {
                             console.error(err);
                           }
                         }}
                       >
-                        <View style={styles(theme).View79f747d2}>
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              margin: 20,
+                            },
+                            dimensions.width
+                          )}
+                        >
                           {/* ChildName */}
                           <Text
-                            style={[
-                              GlobalStyles.TextStyles(theme)['Text'],
-                              styles(theme).Text0759f2cf,
-                            ]}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'],
+                                {
+                                  color: theme.colors['Light Inverse'],
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 26,
+                                }
+                              ),
+                              dimensions.width
+                            )}
                           >
                             {listData?.name}
                           </Text>
                           {/* Balance */}
                           <Text
-                            style={[
-                              GlobalStyles.TextStyles(theme)['Text'],
-                              styles(theme).Text9ff811ac,
-                            ]}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'],
+                                {
+                                  alignSelf: 'flex-start',
+                                  color: theme.colors['Light Inverse'],
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 26,
+                                }
+                              ),
+                              dimensions.width
+                            )}
                           >
                             {listData?.balance}
                           </Text>
@@ -167,10 +232,14 @@ const ChildlistScreen = props => {
                       </Touchable>
                     );
                   }}
-                  style={GlobalStyles.FlatListStyles(theme)['List']}
-                  contentContainerStyle={
-                    GlobalStyles.FlatListStyles(theme)['List']
-                  }
+                  style={StyleSheet.applyWidth(
+                    GlobalStyles.FlatListStyles(theme)['List'],
+                    dimensions.width
+                  )}
+                  contentContainerStyle={StyleSheet.applyWidth(
+                    GlobalStyles.FlatListStyles(theme)['List'],
+                    dimensions.width
+                  )}
                   numColumns={1}
                   onEndReachedThreshold={0.5}
                   showsHorizontalScrollIndicator={true}
@@ -182,13 +251,24 @@ const ChildlistScreen = props => {
         </DooCoinsAPIApi.FetchGetChildrenGET>
       </View>
       {/* AddChildForm */}
-      <View style={GlobalStyles.ViewStyles(theme)['AddChildForm']}>
+      <View
+        style={StyleSheet.applyWidth(
+          GlobalStyles.ViewStyles(theme)['AddChildForm'],
+          dimensions.width
+        )}
+      >
         {/* Add child */}
         <Text
-          style={[
-            GlobalStyles.TextStyles(theme)['Text'],
-            styles(theme).Text1cea83d9,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+              color: theme.colors['Strong Inverse'],
+              fontFamily: 'Roboto_400Regular',
+              fontSize: 26,
+              margin: 20,
+              textAlign: 'center',
+            }),
+            dimensions.width
+          )}
         >
           {'Add a child'}
         </Text>
@@ -201,10 +281,23 @@ const ChildlistScreen = props => {
               console.error(err);
             }
           }}
-          style={[
-            GlobalStyles.TextInputStyles(theme)['Text Input'],
-            styles(theme).TextInputaf0777f7,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(
+              GlobalStyles.TextInputStyles(theme)['Text Input'],
+              {
+                backgroundColor: theme.colors['Medium'],
+                borderColor: theme.colors['Primary'],
+                borderWidth: 2,
+                color: theme.colors['Light Inverse'],
+                fontFamily: 'Roboto_400Regular',
+                fontSize: 26,
+                height: 50,
+                textAlign: 'center',
+                width: '80%',
+              }
+            ),
+            dimensions.width
+          )}
           value={new_child}
           placeholder={'child name'}
           autoCapitalize={'none'}
@@ -226,76 +319,21 @@ const ChildlistScreen = props => {
             };
             handler();
           }}
-          style={[
-            GlobalStyles.ButtonStyles(theme)['Button'],
-            styles(theme).Buttonc6389ac7,
-          ]}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.ButtonStyles(theme)['Button'], {
+              fontFamily: 'Roboto_400Regular',
+              fontSize: 26,
+              height: 50,
+              marginTop: 20,
+              width: '80%',
+            }),
+            dimensions.width
+          )}
           title={'add child'}
         />
       </View>
     </ScreenContainer>
   );
 };
-
-const styles = theme =>
-  StyleSheet.create({
-    Buttonc6389ac7: {
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-      height: 50,
-      marginTop: 20,
-      width: '80%',
-    },
-    IconButtona6665474: { right: 20, top: 3 },
-    Imagec4d7b6b4: { height: 20, marginLeft: 15, width: 30 },
-    Text0759f2cf: {
-      color: theme.colors['Light Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-    },
-    Text1cea83d9: {
-      color: theme.colors['Strong Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-      margin: 20,
-      textAlign: 'center',
-    },
-    Text62985bff: {
-      color: theme.colors['Strong Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-      marginTop: 20,
-      textAlign: 'center',
-    },
-    Text9ff811ac: {
-      alignSelf: 'flex-start',
-      color: theme.colors['Light Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-    },
-    TextInputaf0777f7: {
-      backgroundColor: theme.colors['Medium'],
-      borderColor: theme.colors['Primary'],
-      borderWidth: 2,
-      color: theme.colors['Light Inverse'],
-      fontFamily: 'Roboto_400Regular',
-      fontSize: 26,
-      height: 50,
-      textAlign: 'center',
-      width: '80%',
-    },
-    View79f747d2: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      margin: 20,
-    },
-    Viewd6f729d6: {
-      alignItems: 'flex-end',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 10,
-    },
-    screen: { backgroundColor: theme.colors['Strong'] },
-  });
 
 export default withTheme(ChildlistScreen);
