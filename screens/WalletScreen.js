@@ -40,7 +40,7 @@ const WalletScreen = props => {
           StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Header'], {
             alignItems: 'center',
             backgroundColor: theme.colors['Strong'],
-            marginTop: 0,
+            marginTop: 30,
             paddingTop: 10,
           }),
           dimensions.width
@@ -219,7 +219,10 @@ const WalletScreen = props => {
                         {
                           flexDirection: 'column',
                           justifyContent: 'space-between',
-                          margin: 20,
+                          marginBottom: 10,
+                          marginLeft: 20,
+                          marginRight: 20,
+                          marginTop: 10,
                         },
                         dimensions.width
                       )}

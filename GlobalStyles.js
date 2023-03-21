@@ -2,6 +2,17 @@ import * as StyleSheet from './utils/StyleSheet';
 
 import Breakpoints from './utils/Breakpoints';
 
+export const AccordionGroupStyles = theme =>
+  StyleSheet.create({
+    Accordion: {
+      fontSize: 16,
+      paddingBottom: 8,
+      paddingLeft: 8,
+      paddingRight: 8,
+      paddingTop: 8,
+    },
+  });
+
 export const ViewStyles = theme =>
   StyleSheet.create({
     AddChildForm: {

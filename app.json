@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "DooCoinsPMVP",
-    "slug": "doo-coins-p-m-v-p",
+    "name": "DooCoins",
+    "slug": "doo-coins",
     "scheme": "untitled-app",
-    "description": "DooCoins parent MVP",
+    "description": "DooCoins Kids rewards app, built on blockchain",
     "privacy": "unlisted",
     "platforms": [
       "ios",
@@ -16,7 +16,7 @@
     "splash": {
       "image": "./assets/app/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#5A45FF"
+      "backgroundColor": "#0B334D"
     },
     "assetBundlePatterns": [
       "**/*"

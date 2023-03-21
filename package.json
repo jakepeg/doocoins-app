@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "doo-coins-p-m-v-p",
-  "homepage": "https://doo-coins-p-m-v-p.draftbit.app",
-  "description": "DooCoinsPMVP, powered by Draftbit",
+  "name": "doo-coins",
+  "homepage": "https://doo-coins.draftbit.app",
+  "description": "DooCoins, powered by Draftbit",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
