@@ -75,12 +75,11 @@ function BottomNav() {
     <Tab.Navigator
       initialRouteName="WalletScreen"
       tabBarOptions={{
+        adaptive: false,
+        activeTintColor: theme.colors['Primary'],
         inactiveTintColor: theme.colors['Background'],
         labelStyle: theme.typography.custom27,
-        style: {
-          backgroundColor: theme.colors['Strong'],
-          borderTopColor: null,
-        },
+        style: { backgroundColor: '"rgba(0, 0, 0, 0)"', borderTopColor: null },
       }}
     >
       <Tab.Screen
@@ -92,7 +91,9 @@ function BottomNav() {
             <Icon
               name="Ionicons/wallet-outline"
               size={25}
-              color={focused ? color : color}
+              color={
+                focused ? theme.colors['Primary'] : theme.colors['Background']
+              }
             />
           ),
           tabBarLabel: 'wallet',
@@ -107,7 +108,9 @@ function BottomNav() {
             <Icon
               name="Ionicons/md-list"
               size={25}
-              color={focused ? color : color}
+              color={
+                focused ? theme.colors['Primary'] : theme.colors['Background']
+              }
             />
           ),
           tabBarLabel: 'tasks',
@@ -122,7 +125,9 @@ function BottomNav() {
             <Icon
               name="Ionicons/star-outline"
               size={25}
-              color={focused ? color : color}
+              color={
+                focused ? theme.colors['Primary'] : theme.colors['Background']
+              }
             />
           ),
           tabBarLabel: 'rewards',
@@ -140,6 +145,9 @@ export default function RootAppNavigator() {
         initialRouteName="LoginScreen"
         screenOptions={{
           headerStyle: {
+            backgroundColor: theme.colors['Strong'],
+          },
+          cardStyle: {
             backgroundColor: theme.colors['Strong'],
           },
           headerTintColor: theme.colors['Strong'],

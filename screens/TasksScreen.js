@@ -61,17 +61,28 @@ const TasksScreen = props => {
   const [textInputValue, setTextInputValue] = React.useState('');
 
   return (
-    <ScreenContainer scrollable={false} hasSafeArea={false}>
+    <ScreenContainer
+      style={StyleSheet.applyWidth(
+        {
+          backgroundColor: theme.colors['Strong'],
+          height: '100%',
+          minHeight: '100%',
+        },
+        dimensions.width
+      )}
+      scrollable={false}
+      hasSafeArea={false}
+    >
       {/* Header */}
       <View>
-        {/* Header */}
+        {/* TopNav */}
         <View
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Header'], {
               alignItems: 'center',
               backgroundColor: theme.colors['Strong'],
               marginTop: 0,
-              paddingTop: 10,
+              paddingTop: 40,
             }),
             dimensions.width
           )}
@@ -134,7 +145,7 @@ const TasksScreen = props => {
                       style={StyleSheet.applyWidth(
                         {
                           backgroundColor: theme.colors['Strong'],
-                          height: 170,
+                          height: 140,
                           width: '100%',
                         },
                         dimensions.width
@@ -151,7 +162,7 @@ const TasksScreen = props => {
                                   fontFamily: 'Roboto_400Regular',
                                   fontSize: 32,
                                   marginBottom: 10,
-                                  marginTop: 25,
+                                  marginTop: 0,
                                   textAlign: 'center',
                                 }
                               ),
@@ -205,6 +216,10 @@ const TasksScreen = props => {
       </View>
       {/* Body */}
       <ScrollView
+        contentContainerStyle={StyleSheet.applyWidth(
+          { backgroundColor: theme.colors['Background'], flex: 1 },
+          dimensions.width
+        )}
         showsHorizontalScrollIndicator={true}
         showsVerticalScrollIndicator={true}
         bounces={true}
