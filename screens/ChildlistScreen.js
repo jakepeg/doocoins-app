@@ -75,7 +75,8 @@ const ChildlistScreen = props => {
             alignItems: 'flex-end',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: 10,
+            marginTop: 0,
+            paddingTop: 40,
           },
           dimensions.width
         )}

@@ -64,7 +64,7 @@ const RewardsScreen = props => {
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
-        { backgroundColor: theme.colors['Strong'] },
+        { backgroundColor: theme.colors['Background'] },
         dimensions.width
       )}
       scrollable={false}

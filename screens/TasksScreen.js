@@ -64,7 +64,7 @@ const TasksScreen = props => {
     <ScreenContainer
       style={StyleSheet.applyWidth(
         {
-          backgroundColor: theme.colors['Strong'],
+          backgroundColor: theme.colors['Background'],
           height: '100%',
           minHeight: '100%',
         },

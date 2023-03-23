@@ -3,6 +3,7 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import * as Utils from '../utils';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
 import { IconButton, ScreenContainer, withTheme } from '@draftbit/ui';
@@ -36,7 +37,7 @@ const WalletScreen = props => {
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
-        { backgroundColor: theme.colors['Strong'] },
+        { backgroundColor: theme.colors['Background'], position: 'relative' },
         dimensions.width
       )}
       scrollable={false}
@@ -373,6 +374,9 @@ const WalletScreen = props => {
           </DooCoinsAPIApi.FetchGetTransactionsGET>
         </View>
       </ScrollView>
+      <Utils.CustomCodeErrorBoundary>
+        <></>
+      </Utils.CustomCodeErrorBoundary>
     </ScreenContainer>
   );
 };

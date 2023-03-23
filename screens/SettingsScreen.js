@@ -23,7 +23,7 @@ const SettingsScreen = props => {
   return (
     <ScreenContainer scrollable={false} hasSafeArea={false}>
       {/* Header */}
-      <View>
+      <View style={StyleSheet.applyWidth({ paddingTop: 30 }, dimensions.width)}>
         <IconButton
           onPress={() => {
             try {
@@ -32,6 +32,7 @@ const SettingsScreen = props => {
               console.error(err);
             }
           }}
+          style={StyleSheet.applyWidth({ marginLeft: 20 }, dimensions.width)}
           size={32}
           icon={'Ionicons/close'}
         />
