@@ -242,10 +242,7 @@ const RegisterScreen = props => {
                     key: 'AUTHORIZATION_HEADER',
                     value: 'Bearer ' + authToken,
                   });
-                  navigation.navigate('BottomNav', {
-                    initial: false,
-                    screen: 'WalletScreen',
-                  });
+                  navigation.navigate('DooCoinsScreen');
                 } catch (err) {
                   console.error(err);
                 }

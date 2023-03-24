@@ -300,6 +300,10 @@ const ChildlistScreen = props => {
                   Parent_ID: Constants['Parent_ID'],
                   new_child: new_child,
                 });
+                navigation.navigate('BottomNav', {
+                  initial: false,
+                  screen: 'WalletScreen',
+                });
               } catch (err) {
                 console.error(err);
               }
