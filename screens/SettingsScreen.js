@@ -81,7 +81,7 @@ const SettingsScreen = props => {
               key: 'Parent_ID',
               value: '',
             });
-            navigation.navigate('LoginScreen');
+            navigation.navigate('DooCoinsScreen');
           } catch (err) {
             console.error(err);
           }

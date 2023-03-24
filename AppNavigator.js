@@ -8,8 +8,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import theme from './themes/DraftbitTheme.js';
 import LinkingConfiguration from './LinkingConfiguration.js';
 
+import AddRewardScreen from './screens/AddRewardScreen';
 import ChildlistScreen from './screens/ChildlistScreen';
-import LoginScreen from './screens/LoginScreen';
+import DooCoinsScreen from './screens/DooCoinsScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import RewardsScreen from './screens/RewardsScreen';
@@ -164,9 +165,9 @@ export default function RootAppNavigator() {
           options={{ title: 'Register' }}
         />
         <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{ title: 'Login' }}
+          name="DooCoinsScreen"
+          component={DooCoinsScreen}
+          options={{ title: 'DooCoins' }}
         />
         <Stack.Screen
           name="ChildlistScreen"
@@ -177,6 +178,11 @@ export default function RootAppNavigator() {
           name="SettingsScreen"
           component={SettingsScreen}
           options={{ title: 'Settings' }}
+        />
+        <Stack.Screen
+          name="AddRewardScreen"
+          component={AddRewardScreen}
+          options={{ title: 'AddReward' }}
         />
         <Stack.Screen name="BottomNav" component={BottomNav} />
       </Stack.Navigator>

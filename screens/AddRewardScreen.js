@@ -5,18 +5,10 @@ import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
-import {
-  Button,
-  Icon,
-  IconButton,
-  ScreenContainer,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui';
+import { Button, IconButton, ScreenContainer, withTheme } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   ActivityIndicator,
-  FlatList,
   Image,
   ScrollView,
   Text,
@@ -26,7 +18,7 @@ import {
 } from 'react-native';
 import { Fetch } from 'react-request';
 
-const RewardsScreen = props => {
+const AddRewardScreen = props => {
   const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
@@ -51,12 +43,10 @@ const RewardsScreen = props => {
   const { theme } = props;
   const { navigation } = props;
 
-  const dooCoinsAPIAddTaskTransactionPOST =
-    DooCoinsAPIApi.useAddTaskTransactionPOST();
   const dooCoinsAPIAddRewardPOST = DooCoinsAPIApi.useAddRewardPOST();
 
   const [reward_name, setReward_name] = React.useState('');
-  const [reward_value, setReward_value] = React.useState(0);
+  const [reward_value, setReward_value] = React.useState('');
   const [task_name, setTask_name] = React.useState('');
   const [task_value, setTask_value] = React.useState(0);
   const [textInputValue, setTextInputValue] = React.useState('');
@@ -214,191 +204,142 @@ const RewardsScreen = props => {
       {/* Body */}
       <ScrollView
         contentContainerStyle={StyleSheet.applyWidth(
-          { backgroundColor: theme.colors['Background'], flex: 1 },
+          { backgroundColor: theme.colors['Strong'], flex: 1 },
           dimensions.width
         )}
         showsHorizontalScrollIndicator={true}
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
-        {/* Title */}
-        <View
+        <Text
           style={StyleSheet.applyWidth(
-            {
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 15,
-            },
+            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+              color: theme.colors['Light'],
+              fontFamily: 'Roboto_400Regular',
+              fontSize: 24,
+              marginLeft: 20,
+              marginTop: 20,
+              textAlign: 'center',
+            }),
             dimensions.width
           )}
         >
-          <Text
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                color: theme.colors['Light'],
-                fontFamily: 'Roboto_400Regular',
-                fontSize: 24,
-                marginLeft: 20,
-                marginTop: 20,
-                textAlign: 'center',
-              }),
-              dimensions.width
-            )}
-          >
-            {'Rewards'}
-          </Text>
-          <IconButton
-            onPress={() => {
+          {'Add a reward'}
+        </Text>
+        {/* Add task */}
+        <View
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(
+              GlobalStyles.ViewStyles(theme)['AddChildForm 2'],
+              {
+                backgroundColor: '"rgba(0, 0, 0, 0)"',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }
+            ),
+            dimensions.width
+          )}
+        >
+          {/* Reward name */}
+          <TextInput
+            onChangeText={newRewardNameValue => {
               try {
-                navigation.navigate('AddRewardScreen');
+                setReward_name(newRewardNameValue);
               } catch (err) {
                 console.error(err);
               }
             }}
             style={StyleSheet.applyWidth(
-              { marginRight: 20, marginTop: 20 },
+              StyleSheet.compose(
+                GlobalStyles.TextInputStyles(theme)['Text Input'],
+                {
+                  backgroundColor: theme.colors['Medium'],
+                  borderColor: theme.colors['Primary'],
+                  color: theme.colors['Background'],
+                  fontFamily: 'Roboto_400Regular',
+                  fontSize: 24,
+                  height: 50,
+                  margin: 10,
+                  textAlign: 'center',
+                  width: '80%',
+                }
+              ),
               dimensions.width
             )}
-            size={28}
-            color={theme.colors['Primary']}
-            icon={'Ionicons/add-circle-outline'}
+            value={reward_name}
+            placeholder={'reward name'}
+            autoCapitalize={'none'}
+            placeholderTextColor={theme.colors['Light']}
+            clearTextOnFocus={true}
           />
-        </View>
-        {/* Rewards */}
-        <View>
-          {/* Rewards */}
-          <DooCoinsAPIApi.FetchGetRewardsGET Child_ID={Constants['Child_ID']}>
-            {({ loading, error, data, refetchGetRewards }) => {
-              const rewardsData = data;
-              if (!rewardsData || loading) {
-                return <ActivityIndicator />;
+          {/* Reward value */}
+          <TextInput
+            onChangeText={newRewardValueValue => {
+              try {
+                setReward_value(newRewardValueValue);
+              } catch (err) {
+                console.error(err);
               }
-
-              if (error) {
-                return (
-                  <Text style={{ textAlign: 'center' }}>
-                    There was a problem fetching this data
-                  </Text>
-                );
-              }
-
-              return (
-                <FlatList
-                  data={rewardsData}
-                  listKey={'Ib2oSSRC'}
-                  keyExtractor={listData =>
-                    listData?.id || listData?.uuid || JSON.stringify(listData)
-                  }
-                  renderItem={({ item }) => {
-                    const listData = item;
-                    return (
-                      <Touchable
-                        onPress={() => {
-                          const handler = async () => {
-                            try {
-                              await dooCoinsAPIAddTaskTransactionPOST.mutateAsync(
-                                {
-                                  Child_ID: Constants['Child_ID'],
-                                  plus_minus: '-',
-                                  transaction_name: listData?.name,
-                                  transaction_value: listData?.value,
-                                }
-                              );
-                              navigation.navigate('WalletScreen');
-                            } catch (err) {
-                              console.error(err);
-                            }
-                          };
-                          handler();
-                        }}
-                      >
-                        <View
-                          style={StyleSheet.applyWidth(
-                            {
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              margin: 20,
-                            },
-                            dimensions.width
-                          )}
-                        >
-                          {/* Name */}
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(
-                                GlobalStyles.TextStyles(theme)['Text'],
-                                {
-                                  alignSelf: 'flex-start',
-                                  fontFamily: 'Roboto_400Regular',
-                                  fontSize: 24,
-                                  textAlign: 'left',
-                                }
-                              ),
-                              dimensions.width
-                            )}
-                          >
-                            {listData?.name}
-                          </Text>
-
-                          <View
-                            style={StyleSheet.applyWidth(
-                              { flexDirection: 'row' },
-                              dimensions.width
-                            )}
-                          >
-                            {/* Value */}
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(
-                                  GlobalStyles.TextStyles(theme)['Text'],
-                                  {
-                                    fontFamily: 'Roboto_400Regular',
-                                    fontSize: 24,
-                                  }
-                                ),
-                                dimensions.width
-                              )}
-                            >
-                              {listData?.value}
-                            </Text>
-                            <Icon
-                              style={StyleSheet.applyWidth(
-                                { marginLeft: 10 },
-                                dimensions.width
-                              )}
-                              name={'Ionicons/checkmark-circle-sharp'}
-                              color={theme.colors['Primary']}
-                              size={28}
-                            />
-                          </View>
-                        </View>
-                      </Touchable>
-                    );
-                  }}
-                  style={StyleSheet.applyWidth(
-                    GlobalStyles.FlatListStyles(theme)['List'],
-                    dimensions.width
-                  )}
-                  contentContainerStyle={StyleSheet.applyWidth(
-                    StyleSheet.compose(
-                      GlobalStyles.FlatListStyles(theme)['List'],
-                      { alignSelf: 'stretch', flexDirection: 'column' }
-                    ),
-                    dimensions.width
-                  )}
-                  numColumns={1}
-                  onEndReachedThreshold={0.5}
-                  showsHorizontalScrollIndicator={true}
-                  showsVerticalScrollIndicator={true}
-                  inverted={true}
-                />
-              );
             }}
-          </DooCoinsAPIApi.FetchGetRewardsGET>
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(
+                GlobalStyles.TextInputStyles(theme)['Text Input'],
+                {
+                  backgroundColor: theme.colors['Medium'],
+                  borderColor: theme.colors['Primary'],
+                  borderWidth: 1,
+                  color: theme.colors['Background'],
+                  fontFamily: 'Roboto_400Regular',
+                  fontSize: 24,
+                  height: 50,
+                  margin: 10,
+                  textAlign: 'center',
+                  width: '80%',
+                }
+              ),
+              dimensions.width
+            )}
+            value={reward_value}
+            placeholder={'value'}
+            autoCapitalize={'none'}
+            placeholderTextColor={theme.colors['Light']}
+            clearTextOnFocus={true}
+          />
+          <Button
+            onPress={() => {
+              const handler = async () => {
+                try {
+                  await dooCoinsAPIAddRewardPOST.mutateAsync({
+                    Child_ID: Constants['Child_ID'],
+                    reward_name: reward_name,
+                    reward_value: reward_value,
+                  });
+                  navigation.navigate('BottomNav', {
+                    initial: false,
+                    screen: 'RewardsScreen',
+                  });
+                } catch (err) {
+                  console.error(err);
+                }
+              };
+              handler();
+            }}
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.ButtonStyles(theme)['Button'], {
+                fontFamily: 'Roboto_300Light',
+                fontSize: 24,
+                height: 50,
+                margin: 10,
+                width: '80%',
+              }),
+              dimensions.width
+            )}
+            title={'add'}
+          />
         </View>
       </ScrollView>
     </ScreenContainer>
   );
 };
 
-export default withTheme(RewardsScreen);
+export default withTheme(AddRewardScreen);

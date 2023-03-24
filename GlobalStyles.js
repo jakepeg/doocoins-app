@@ -89,12 +89,8 @@ export const TextInputStyles = theme =>
       paddingTop: 8,
     },
     'Text Input': {
-      borderBottomWidth: 1,
       borderColor: theme.colors.divider,
-      borderLeftWidth: 1,
       borderRadius: 8,
-      borderRightWidth: 1,
-      borderTopWidth: 1,
       paddingBottom: 8,
       paddingLeft: 8,
       paddingRight: 8,

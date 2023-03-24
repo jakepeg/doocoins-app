@@ -368,6 +368,7 @@ const TasksScreen = props => {
                   onEndReachedThreshold={0.5}
                   showsHorizontalScrollIndicator={true}
                   showsVerticalScrollIndicator={true}
+                  inverted={true}
                 />
               );
             }}

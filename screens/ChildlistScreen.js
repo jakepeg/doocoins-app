@@ -48,7 +48,7 @@ const ChildlistScreen = props => {
         if (email) {
           return;
         }
-        navigation.navigate('LoginScreen');
+        navigation.navigate('DooCoinsScreen');
       } catch (err) {
         console.error(err);
       }
@@ -165,21 +165,6 @@ const ChildlistScreen = props => {
                               key: 'Child_ID',
                               value: listData?.id,
                             });
-                            setGlobalVariableValue({
-                              key: 'Selected_Child_Balance',
-                              value: listData?.balance,
-                            });
-                            console.log(Constants['Child_ID']);
-                            setGlobalVariableValue({
-                              key: 'Selected_Child_Name',
-                              value: listData?.name,
-                            });
-                            console.log(Constants['Selected_Child_Name']);
-                            setGlobalVariableValue({
-                              key: 'Selected_Child_Reward',
-                              value: listData?.rewards_id,
-                            });
-                            console.log(Constants['Selected_Child_Reward']);
                             navigation.navigate('BottomNav');
                           } catch (err) {
                             console.error(err);
@@ -305,6 +290,7 @@ const ChildlistScreen = props => {
           clearTextOnFocus={true}
           textContentType={'givenName'}
           clearButtonMode={'never'}
+          placeholderTextColor={theme.colors['Light']}
         />
         <Button
           onPress={() => {
