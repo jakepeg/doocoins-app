@@ -6,8 +6,6 @@ import Images from '../config/Images';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
 import {
-  AccordionGroup,
-  Button,
   Icon,
   IconButton,
   ScreenContainer,
@@ -21,7 +19,6 @@ import {
   Image,
   ScrollView,
   Text,
-  TextInput,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -54,7 +51,6 @@ const TasksScreen = props => {
 
   const dooCoinsAPIAddTaskTransactionPOST =
     DooCoinsAPIApi.useAddTaskTransactionPOST();
-  const dooCoinsAPIAddTaskPOST = DooCoinsAPIApi.useAddTaskPOST();
 
   const [task_name, setTask_name] = React.useState('');
   const [task_value, setTask_value] = React.useState(0);
@@ -227,7 +223,11 @@ const TasksScreen = props => {
         {/* Title */}
         <View
           style={StyleSheet.applyWidth(
-            { flexDirection: 'row', justifyContent: 'space-between' },
+            {
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 15,
+            },
             dimensions.width
           )}
         >
@@ -258,8 +258,8 @@ const TasksScreen = props => {
               { marginRight: 20, marginTop: 20 },
               dimensions.width
             )}
-            size={32}
             icon={'Ionicons/add-circle-outline'}
+            size={28}
           />
         </View>
         {/* Tasks */}
@@ -397,127 +397,6 @@ const TasksScreen = props => {
             }}
           </DooCoinsAPIApi.FetchGetTasksGET>
         </View>
-
-        <AccordionGroup
-          style={StyleSheet.applyWidth(
-            StyleSheet.compose(
-              GlobalStyles.AccordionGroupStyles(theme)['Accordion'],
-              { alignSelf: 'center' }
-            ),
-            dimensions.width
-          )}
-          caretSize={0}
-          iconSize={48}
-          label={''}
-          icon={'Ionicons/add-circle-sharp'}
-        >
-          {/* Add task */}
-          <View
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(
-                GlobalStyles.ViewStyles(theme)['AddChildForm 2'],
-                {
-                  backgroundColor: '"rgba(0, 0, 0, 0)"',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }
-              ),
-              dimensions.width
-            )}
-          >
-            {/* Task name */}
-            <TextInput
-              onChangeText={newTaskNameValue => {
-                try {
-                  setTask_name(newTaskNameValue);
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-              style={StyleSheet.applyWidth(
-                StyleSheet.compose(
-                  GlobalStyles.TextInputStyles(theme)['Text Input'],
-                  {
-                    backgroundColor: theme.colors['Background'],
-                    borderBottomLeftRadius: 8,
-                    borderBottomRightRadius: 0,
-                    borderColor: theme.colors['Primary'],
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 0,
-                    color: theme.colors['Medium'],
-                    fontFamily: 'Roboto_400Regular',
-                    fontSize: 24,
-                    height: 50,
-                    textAlign: 'center',
-                    width: 160,
-                  }
-                ),
-                dimensions.width
-              )}
-              value={task_name}
-              placeholder={'task name'}
-              autoCapitalize={'none'}
-            />
-            {/* Task value */}
-            <TextInput
-              onChangeText={newTaskValueValue => {
-                try {
-                  setTask_value(newTaskValueValue);
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-              style={StyleSheet.applyWidth(
-                StyleSheet.compose(
-                  GlobalStyles.TextInputStyles(theme)['Text Input'],
-                  {
-                    borderColor: theme.colors['Primary'],
-                    borderLeftWidth: 0,
-                    borderRadius: 0,
-                    fontFamily: 'Roboto_400Regular',
-                    fontSize: 24,
-                    height: 50,
-                    width: 80,
-                  }
-                ),
-                dimensions.width
-              )}
-              value={task_value}
-              placeholder={'value'}
-              autoCapitalize={'none'}
-            />
-            <Button
-              onPress={() => {
-                const handler = async () => {
-                  try {
-                    await dooCoinsAPIAddTaskPOST.mutateAsync({
-                      Child_ID: Constants['Child_ID'],
-                      task_name: task_name,
-                      task_value: task_value,
-                    });
-                  } catch (err) {
-                    console.error(err);
-                  }
-                };
-                handler();
-              }}
-              style={StyleSheet.applyWidth(
-                StyleSheet.compose(GlobalStyles.ButtonStyles(theme)['Button'], {
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 8,
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  fontFamily: 'Roboto_300Light',
-                  fontSize: 24,
-                  height: 50,
-                  width: 60,
-                }),
-                dimensions.width
-              )}
-              title={'add'}
-            />
-          </View>
-        </AccordionGroup>
       </ScrollView>
     </ScreenContainer>
   );
