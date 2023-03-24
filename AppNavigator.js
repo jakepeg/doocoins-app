@@ -9,6 +9,7 @@ import theme from './themes/DraftbitTheme.js';
 import LinkingConfiguration from './LinkingConfiguration.js';
 
 import AddRewardScreen from './screens/AddRewardScreen';
+import AddTaskScreen from './screens/AddTaskScreen';
 import ChildlistScreen from './screens/ChildlistScreen';
 import DooCoinsScreen from './screens/DooCoinsScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
@@ -183,6 +184,11 @@ export default function RootAppNavigator() {
           name="AddRewardScreen"
           component={AddRewardScreen}
           options={{ title: 'AddReward' }}
+        />
+        <Stack.Screen
+          name="AddTaskScreen"
+          component={AddTaskScreen}
+          options={{ title: 'AddTask' }}
         />
         <Stack.Screen name="BottomNav" component={BottomNav} />
       </Stack.Navigator>

@@ -24,7 +24,7 @@ import {
 } from 'react-native';
 import { Fetch } from 'react-request';
 
-const AddRewardScreen = props => {
+const AddTaskScreen = props => {
   const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
@@ -49,18 +49,20 @@ const AddRewardScreen = props => {
   const { theme } = props;
   const { navigation } = props;
 
-  const dooCoinsAPIAddRewardPOST = DooCoinsAPIApi.useAddRewardPOST();
+  const dooCoinsAPIAddTaskPOST = DooCoinsAPIApi.useAddTaskPOST();
 
-  const [reward_name, setReward_name] = React.useState('');
-  const [reward_value, setReward_value] = React.useState('');
   const [task_name, setTask_name] = React.useState('');
-  const [task_value, setTask_value] = React.useState(0);
+  const [task_value, setTask_value] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
 
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
-        { backgroundColor: theme.colors['Background'] },
+        {
+          backgroundColor: theme.colors['Background'],
+          height: '100%',
+          minHeight: '100%',
+        },
         dimensions.width
       )}
       scrollable={false}
@@ -220,7 +222,7 @@ const AddRewardScreen = props => {
         <Text
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-              color: theme.colors['Background'],
+              color: theme.colors['Light'],
               fontFamily: 'Roboto_400Regular',
               fontSize: 24,
               marginLeft: 20,
@@ -230,7 +232,7 @@ const AddRewardScreen = props => {
             dimensions.width
           )}
         >
-          {'Add a reward'}
+          {'Add a task'}
         </Text>
         {/* Add task */}
         <View
@@ -246,11 +248,11 @@ const AddRewardScreen = props => {
             dimensions.width
           )}
         >
-          {/* Reward name */}
+          {/* Task name */}
           <TextInput
-            onChangeText={newRewardNameValue => {
+            onChangeText={newTaskNameValue => {
               try {
-                setReward_name(newRewardNameValue);
+                setTask_name(newTaskNameValue);
               } catch (err) {
                 console.error(err);
               }
@@ -273,17 +275,16 @@ const AddRewardScreen = props => {
               ),
               dimensions.width
             )}
-            value={reward_name}
-            placeholder={'reward name'}
+            value={task_name}
+            placeholder={'task name'}
             autoCapitalize={'none'}
             placeholderTextColor={theme.colors['Light']}
-            clearTextOnFocus={true}
           />
-          {/* Reward value */}
+          {/* Task value */}
           <TextInput
-            onChangeText={newRewardValueValue => {
+            onChangeText={newTaskValueValue => {
               try {
-                setReward_value(newRewardValueValue);
+                setTask_value(newTaskValueValue);
               } catch (err) {
                 console.error(err);
               }
@@ -306,24 +307,23 @@ const AddRewardScreen = props => {
               ),
               dimensions.width
             )}
-            value={reward_value}
+            value={task_value}
             placeholder={'value'}
             autoCapitalize={'none'}
             placeholderTextColor={theme.colors['Light']}
-            clearTextOnFocus={true}
           />
           <Button
             onPress={() => {
               const handler = async () => {
                 try {
-                  await dooCoinsAPIAddRewardPOST.mutateAsync({
+                  await dooCoinsAPIAddTaskPOST.mutateAsync({
                     Child_ID: Constants['Child_ID'],
-                    reward_name: reward_name,
-                    reward_value: reward_value,
+                    task_name: task_name,
+                    task_value: task_value,
                   });
                   navigation.navigate('BottomNav', {
                     initial: false,
-                    screen: 'RewardsScreen',
+                    screen: 'TasksScreen',
                   });
                 } catch (err) {
                   console.error(err);
@@ -336,7 +336,7 @@ const AddRewardScreen = props => {
                 fontFamily: 'Roboto_300Light',
                 fontSize: 24,
                 height: 50,
-                margin: 10,
+                marginTop: 10,
                 width: '80%',
               }),
               dimensions.width
@@ -348,7 +348,7 @@ const AddRewardScreen = props => {
               try {
                 navigation.navigate('BottomNav', {
                   initial: false,
-                  screen: 'RewardsScreen',
+                  screen: 'TasksScreen',
                 });
               } catch (err) {
                 console.error(err);
@@ -361,7 +361,7 @@ const AddRewardScreen = props => {
                   color: theme.colors['Primary'],
                   fontFamily: 'Roboto_700Bold',
                   fontSize: 21,
-                  margin: 20,
+                  marginTop: 30,
                 }),
                 dimensions.width
               )}
@@ -375,4 +375,4 @@ const AddRewardScreen = props => {
   );
 };
 
-export default withTheme(AddRewardScreen);
+export default withTheme(AddTaskScreen);

@@ -224,21 +224,44 @@ const TasksScreen = props => {
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
-        <Text
+        {/* Title */}
+        <View
           style={StyleSheet.applyWidth(
-            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-              color: theme.colors['Light'],
-              fontFamily: 'Roboto_400Regular',
-              fontSize: 24,
-              marginLeft: 20,
-              marginTop: 20,
-              textAlign: 'center',
-            }),
+            { flexDirection: 'row', justifyContent: 'space-between' },
             dimensions.width
           )}
         >
-          {'Tasks'}
-        </Text>
+          <Text
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                color: theme.colors['Light'],
+                fontFamily: 'Roboto_400Regular',
+                fontSize: 24,
+                marginLeft: 20,
+                marginTop: 20,
+                textAlign: 'center',
+              }),
+              dimensions.width
+            )}
+          >
+            {'Tasks'}
+          </Text>
+          <IconButton
+            onPress={() => {
+              try {
+                navigation.navigate('AddTaskScreen');
+              } catch (err) {
+                console.error(err);
+              }
+            }}
+            style={StyleSheet.applyWidth(
+              { marginRight: 20, marginTop: 20 },
+              dimensions.width
+            )}
+            size={32}
+            icon={'Ionicons/add-circle-outline'}
+          />
+        </View>
         {/* Tasks */}
         <View>
           {/* Tasks */}

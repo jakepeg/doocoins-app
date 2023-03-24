@@ -4,7 +4,7 @@ import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
-import { Button, ScreenContainer, withTheme } from '@draftbit/ui';
+import { Button, ScreenContainer, Touchable, withTheme } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   Image,
@@ -251,20 +251,30 @@ const DooCoinsScreen = props => {
             )}
             title={'continue'}
           />
-          <Text
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                color: theme.colors['Primary'],
-                fontFamily: 'Roboto_700Bold',
-                fontSize: 21,
-                marginTop: 20,
-                textAlign: 'center',
-              }),
-              dimensions.width
-            )}
+          <Touchable
+            onPress={() => {
+              try {
+                navigation.navigate('RegisterScreen');
+              } catch (err) {
+                console.error(err);
+              }
+            }}
           >
-            {'register'}
-          </Text>
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['Primary'],
+                  fontFamily: 'Roboto_700Bold',
+                  fontSize: 21,
+                  marginTop: 30,
+                  textAlign: 'center',
+                }),
+                dimensions.width
+              )}
+            >
+              {'register'}
+            </Text>
+          </Touchable>
 
           <Text
             style={StyleSheet.applyWidth(
