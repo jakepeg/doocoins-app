@@ -242,7 +242,10 @@ const RegisterScreen = props => {
                     key: 'AUTHORIZATION_HEADER',
                     value: 'Bearer ' + authToken,
                   });
-                  navigation.navigate('OnboardingScreen');
+                  navigation.navigate('BottomNav', {
+                    initial: false,
+                    screen: 'WalletScreen',
+                  });
                 } catch (err) {
                   console.error(err);
                 }

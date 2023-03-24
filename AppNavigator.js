@@ -144,7 +144,7 @@ export default function RootAppNavigator() {
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator
         headerMode="none"
-        initialRouteName="LoginScreen"
+        initialRouteName="DooCoinsScreen"
         screenOptions={{
           headerStyle: {
             backgroundColor: theme.colors['Strong'],

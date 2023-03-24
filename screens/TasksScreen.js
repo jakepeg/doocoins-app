@@ -255,11 +255,11 @@ const TasksScreen = props => {
               }
             }}
             style={StyleSheet.applyWidth(
-              { marginRight: 20, marginTop: 20 },
+              { marginRight: 20, marginTop: 15 },
               dimensions.width
             )}
             icon={'Ionicons/add-circle-outline'}
-            size={28}
+            size={38}
           />
         </View>
         {/* Tasks */}

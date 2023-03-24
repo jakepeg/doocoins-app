@@ -311,6 +311,7 @@ const AddTaskScreen = props => {
             placeholder={'value'}
             autoCapitalize={'none'}
             placeholderTextColor={theme.colors['Light']}
+            clearTextOnFocus={true}
           />
           <Button
             onPress={() => {

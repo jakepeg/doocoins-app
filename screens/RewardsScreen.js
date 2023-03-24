@@ -250,17 +250,17 @@ const RewardsScreen = props => {
           <IconButton
             onPress={() => {
               try {
-                navigation.navigate('AddRewardScreen');
+                navigation.navigate('RootNavigator');
               } catch (err) {
                 console.error(err);
               }
             }}
             style={StyleSheet.applyWidth(
-              { marginRight: 20, marginTop: 20 },
+              { marginRight: 20, marginTop: 15 },
               dimensions.width
             )}
-            size={28}
             color={theme.colors['Primary']}
+            size={38}
             icon={'Ionicons/add-circle-outline'}
           />
         </View>
