@@ -3,6 +3,7 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import * as CustomCode from '../custom-files/CustomCode';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
 import {
@@ -12,9 +13,7 @@ import {
   Touchable,
   withTheme,
 } from '@draftbit/ui';
-import { useIsFocused } from '@react-navigation/native';
 import {
-  ActivityIndicator,
   Image,
   ScrollView,
   Text,
@@ -22,7 +21,6 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { Fetch } from 'react-request';
 
 const AddTaskScreen = props => {
   const dimensions = useWindowDimensions();
@@ -115,98 +113,64 @@ const AddTaskScreen = props => {
         </View>
         {/* Ballance */}
         <View>
-          {/* Balance */}
-          <>
-            {!Constants['Child_ID'] ? null : (
-              <DooCoinsAPIApi.FetchGetChildGET
-                children_id={Constants['Child_ID']}
-              >
-                {({ loading, error, data, refetchGetChild }) => {
-                  const balanceData = data;
-                  if (!balanceData || loading) {
-                    return <ActivityIndicator />;
-                  }
-
-                  if (error) {
-                    return (
-                      <Text style={{ textAlign: 'center' }}>
-                        There was a problem fetching this data
-                      </Text>
-                    );
-                  }
-
-                  return (
-                    <View
-                      style={StyleSheet.applyWidth(
-                        {
-                          backgroundColor: theme.colors['Strong'],
-                          height: 140,
-                          width: '100%',
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      <>
-                        {!balanceData?.name ? null : (
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(
-                                GlobalStyles.TextStyles(theme)['Text'],
-                                {
-                                  color: 'rgb(255, 255, 255)',
-                                  fontFamily: 'Roboto_400Regular',
-                                  fontSize: 32,
-                                  marginBottom: 10,
-                                  marginTop: 0,
-                                  textAlign: 'center',
-                                }
-                              ),
-                              dimensions.width
-                            )}
-                          >
-                            {balanceData?.name}
-                          </Text>
-                        )}
-                      </>
-                      <View
-                        style={StyleSheet.applyWidth(
-                          { flexDirection: 'row', justifyContent: 'center' },
-                          dimensions.width
-                        )}
-                      >
-                        <Image
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.ImageStyles(theme)['Image'],
-                              { height: 50, marginTop: 14, width: 50 }
-                            ),
-                            dimensions.width
-                          )}
-                          resizeMode={'cover'}
-                          source={Images.DCSymbol}
-                        />
-                        <Text
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.TextStyles(theme)['Text'],
-                              {
-                                color: 'rgb(255, 255, 255)',
-                                fontFamily: 'Roboto_300Light',
-                                fontSize: 66,
-                              }
-                            ),
-                            dimensions.width
-                          )}
-                        >
-                          {balanceData?.balance}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                }}
-              </DooCoinsAPIApi.FetchGetChildGET>
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                backgroundColor: theme.colors['Strong'],
+                height: 140,
+                width: '100%',
+              },
+              dimensions.width
             )}
-          </>
+          >
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: 'rgb(255, 255, 255)',
+                  fontFamily: 'Roboto_400Regular',
+                  fontSize: 32,
+                  marginBottom: 10,
+                  marginTop: 0,
+                  textAlign: 'center',
+                }),
+                dimensions.width
+              )}
+            >
+              {Constants['Child_Name']}
+            </Text>
+
+            <View
+              style={StyleSheet.applyWidth(
+                { flexDirection: 'row', justifyContent: 'center' },
+                dimensions.width
+              )}
+            >
+              <Image
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                    height: 50,
+                    marginTop: 14,
+                    width: 50,
+                  }),
+                  dimensions.width
+                )}
+                resizeMode={'cover'}
+                source={Images.DCSymbol}
+              />
+              <Text
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                    color: 'rgb(255, 255, 255)',
+                    fontFamily: 'Roboto_300Light',
+                    fontSize: 66,
+                  }),
+                  dimensions.width
+                )}
+              >
+                {Constants['Balance']}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       {/* Body */}
@@ -322,10 +286,7 @@ const AddTaskScreen = props => {
                     task_name: task_name,
                     task_value: task_value,
                   });
-                  navigation.navigate('BottomNav', {
-                    initial: false,
-                    screen: 'TasksScreen',
-                  });
+                  navigation.navigate('BottomNav', { screen: 'TasksScreen' });
                 } catch (err) {
                   console.error(err);
                 }
@@ -347,10 +308,7 @@ const AddTaskScreen = props => {
           <Touchable
             onPress={() => {
               try {
-                navigation.navigate('BottomNav', {
-                  initial: false,
-                  screen: 'TasksScreen',
-                });
+                navigation.navigate('BottomNav', { screen: 'TasksScreen' });
               } catch (err) {
                 console.error(err);
               }

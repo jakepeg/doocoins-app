@@ -524,6 +524,72 @@ export const FetchGetChildrenGET = ({
   return children({ loading, data, error, refetchGetChildren: refetch });
 };
 
+export const getGoalGET = (Constants, { rewards_id }) =>
+  fetch(
+    `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/rewards/${
+      rewards_id ?? ''
+    }`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useGetGoalGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(['reward', args], () => getGoalGET(Constants, args), {
+    refetchInterval,
+    onSuccess: () => queryClient.invalidateQueries(['rewards']),
+  });
+};
+
+export const FetchGetGoalGET = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  rewards_id,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const { loading, data, error, refetch } = useGetGoalGET(
+    { rewards_id },
+    { refetchInterval }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchGetGoal: refetch });
+};
+
 export const getRewardsGET = (Constants, { Child_ID }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildrewards/${

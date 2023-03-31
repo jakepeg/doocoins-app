@@ -3,10 +3,10 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import * as CustomCode from '../custom-files/CustomCode';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
 import {
-  Button,
   Icon,
   IconButton,
   ScreenContainer,
@@ -20,7 +20,6 @@ import {
   Image,
   ScrollView,
   Text,
-  TextInput,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -30,6 +29,7 @@ const RewardsScreen = props => {
   const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
+  const setGlobalVariableValue = GlobalVariables.useSetValue();
 
   const humanReadableDate = time => {
     return new Date(time).toLocaleString('en-US', {
@@ -53,7 +53,6 @@ const RewardsScreen = props => {
 
   const dooCoinsAPIAddTaskTransactionPOST =
     DooCoinsAPIApi.useAddTaskTransactionPOST();
-  const dooCoinsAPIAddRewardPOST = DooCoinsAPIApi.useAddRewardPOST();
 
   const [reward_name, setReward_name] = React.useState('');
   const [reward_value, setReward_value] = React.useState(0);
@@ -110,105 +109,71 @@ const RewardsScreen = props => {
               { right: 10, top: 3 },
               dimensions.width
             )}
-            icon={'Ionicons/settings-sharp'}
             color={theme.colors['White']}
+            icon={'Ionicons/person-sharp'}
             size={24}
           />
         </View>
         {/* Ballance */}
         <View>
-          {/* Balance */}
-          <>
-            {!Constants['Child_ID'] ? null : (
-              <DooCoinsAPIApi.FetchGetChildGET
-                children_id={Constants['Child_ID']}
-              >
-                {({ loading, error, data, refetchGetChild }) => {
-                  const balanceData = data;
-                  if (!balanceData || loading) {
-                    return <ActivityIndicator />;
-                  }
-
-                  if (error) {
-                    return (
-                      <Text style={{ textAlign: 'center' }}>
-                        There was a problem fetching this data
-                      </Text>
-                    );
-                  }
-
-                  return (
-                    <View
-                      style={StyleSheet.applyWidth(
-                        {
-                          backgroundColor: theme.colors['Strong'],
-                          height: 140,
-                          width: '100%',
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      <>
-                        {!balanceData?.name ? null : (
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(
-                                GlobalStyles.TextStyles(theme)['Text'],
-                                {
-                                  color: 'rgb(255, 255, 255)',
-                                  fontFamily: 'Roboto_400Regular',
-                                  fontSize: 32,
-                                  marginBottom: 10,
-                                  marginTop: 0,
-                                  textAlign: 'center',
-                                }
-                              ),
-                              dimensions.width
-                            )}
-                          >
-                            {balanceData?.name}
-                          </Text>
-                        )}
-                      </>
-                      <View
-                        style={StyleSheet.applyWidth(
-                          { flexDirection: 'row', justifyContent: 'center' },
-                          dimensions.width
-                        )}
-                      >
-                        <Image
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.ImageStyles(theme)['Image'],
-                              { height: 50, marginTop: 14, width: 50 }
-                            ),
-                            dimensions.width
-                          )}
-                          resizeMode={'cover'}
-                          source={Images.DCSymbol}
-                        />
-                        <Text
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.TextStyles(theme)['Text'],
-                              {
-                                color: 'rgb(255, 255, 255)',
-                                fontFamily: 'Roboto_300Light',
-                                fontSize: 66,
-                              }
-                            ),
-                            dimensions.width
-                          )}
-                        >
-                          {balanceData?.balance}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                }}
-              </DooCoinsAPIApi.FetchGetChildGET>
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                backgroundColor: theme.colors['Strong'],
+                height: 140,
+                width: '100%',
+              },
+              dimensions.width
             )}
-          </>
+          >
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: 'rgb(255, 255, 255)',
+                  fontFamily: 'Roboto_400Regular',
+                  fontSize: 32,
+                  marginBottom: 10,
+                  marginTop: 0,
+                  textAlign: 'center',
+                }),
+                dimensions.width
+              )}
+            >
+              {Constants['Child_Name']}
+            </Text>
+
+            <View
+              style={StyleSheet.applyWidth(
+                { flexDirection: 'row', justifyContent: 'center' },
+                dimensions.width
+              )}
+            >
+              <Image
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                    height: 50,
+                    marginTop: 14,
+                    width: 50,
+                  }),
+                  dimensions.width
+                )}
+                resizeMode={'cover'}
+                source={Images.DCSymbol}
+              />
+              <Text
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                    color: 'rgb(255, 255, 255)',
+                    fontFamily: 'Roboto_300Light',
+                    fontSize: 66,
+                  }),
+                  dimensions.width
+                )}
+              >
+                {Constants['Balance']}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       {/* Body */}
@@ -250,7 +215,7 @@ const RewardsScreen = props => {
           <IconButton
             onPress={() => {
               try {
-                navigation.navigate('RootNavigator');
+                navigation.navigate('AddRewardScreen');
               } catch (err) {
                 console.error(err);
               }
@@ -304,6 +269,15 @@ const RewardsScreen = props => {
                                   transaction_value: listData?.value,
                                 }
                               );
+                              const New_Balance = updateBalance(
+                                Constants['Balance'],
+                                listData?.value,
+                                '-'
+                              );
+                              setGlobalVariableValue({
+                                key: 'Balance',
+                                value: New_Balance,
+                              });
                               navigation.navigate('WalletScreen');
                             } catch (err) {
                               console.error(err);

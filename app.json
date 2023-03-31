@@ -10,7 +10,7 @@
       "android",
       "web"
     ],
-    "version": "1.23.0",
+    "version": "1.41.0",
     "orientation": "default",
     "icon": "./assets/app/icon.png",
     "splash": {
@@ -23,18 +23,23 @@
     ],
     "ios": {
       "bundleIdentifier": "com.draftbit.untitledapp",
-      "supportsTablet": false,
-      "buildNumber": "1.23.0",
+      "supportsTablet": null,
+      "buildNumber": "1.41.0",
       "infoPlist": {},
       "usesIcloudStorage": false
     },
     "android": {
-      "versionCode": 23,
+      "versionCode": 41,
       "package": "com.draftbit.untitledapp",
       "permissions": []
     },
     "web": {
-      "themeColor": "#000000"
+      "display": "standalone",
+      "barStyle": "black",
+      "themeColor": "#000000",
+      "orientation": "portrait-primary",
+      "backgroundColor": null,
+      "preferRelatedApplications": null
     },
     "notification": {
       "androidMode": "default"

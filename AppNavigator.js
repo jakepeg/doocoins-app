@@ -81,7 +81,10 @@ function BottomNav() {
         activeTintColor: theme.colors['Primary'],
         inactiveTintColor: theme.colors['Background'],
         labelStyle: theme.typography.custom27,
-        style: { backgroundColor: '"rgba(0, 0, 0, 0)"', borderTopColor: null },
+        style: {
+          backgroundColor: '"rgba(0, 0, 0, 0)"',
+          borderTopColor: 'transparent',
+        },
       }}
     >
       <Tab.Screen
@@ -148,6 +151,7 @@ export default function RootAppNavigator() {
         screenOptions={{
           headerStyle: {
             backgroundColor: theme.colors['Strong'],
+            borderBottomColor: 'transparent',
           },
           cardStyle: {
             backgroundColor: theme.colors['Strong'],
@@ -158,37 +162,51 @@ export default function RootAppNavigator() {
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}
-          options={{ title: 'Onboarding' }}
+          options={{
+            title: 'Onboarding',
+          }}
         />
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterScreen}
-          options={{ title: 'Register' }}
+          options={{
+            title: 'Register',
+          }}
         />
         <Stack.Screen
           name="DooCoinsScreen"
           component={DooCoinsScreen}
-          options={{ title: 'DooCoins' }}
+          options={{
+            title: 'DooCoins',
+          }}
         />
         <Stack.Screen
           name="ChildlistScreen"
           component={ChildlistScreen}
-          options={{ title: 'Childlist' }}
+          options={{
+            title: 'Childlist',
+          }}
         />
         <Stack.Screen
           name="SettingsScreen"
           component={SettingsScreen}
-          options={{ title: 'Settings' }}
+          options={{
+            title: 'Settings',
+          }}
         />
         <Stack.Screen
           name="AddRewardScreen"
           component={AddRewardScreen}
-          options={{ title: 'AddReward' }}
+          options={{
+            title: 'AddReward',
+          }}
         />
         <Stack.Screen
           name="AddTaskScreen"
           component={AddTaskScreen}
-          options={{ title: 'AddTask' }}
+          options={{
+            title: 'AddTask',
+          }}
         />
         <Stack.Screen name="BottomNav" component={BottomNav} />
       </Stack.Navigator>

@@ -165,6 +165,18 @@ const ChildlistScreen = props => {
                               key: 'Child_ID',
                               value: listData?.id,
                             });
+                            setGlobalVariableValue({
+                              key: 'Reward_ID',
+                              value: listData?.rewards_id,
+                            });
+                            setGlobalVariableValue({
+                              key: 'Child_Name',
+                              value: listData?.name,
+                            });
+                            setGlobalVariableValue({
+                              key: 'Balance',
+                              value: listData?.balance,
+                            });
                             navigation.navigate('BottomNav');
                           } catch (err) {
                             console.error(err);
@@ -299,10 +311,6 @@ const ChildlistScreen = props => {
                 await dooCoinsAPIAddChildPOST.mutateAsync({
                   Parent_ID: Constants['Parent_ID'],
                   new_child: new_child,
-                });
-                navigation.navigate('BottomNav', {
-                  initial: false,
-                  screen: 'WalletScreen',
                 });
               } catch (err) {
                 console.error(err);

@@ -55,6 +55,7 @@
     "expo-system-ui": "~1.3.0",
     "expo-web-browser": "~11.0.0",
     "react": "18.0.0",
+    "react-circular-progressbar": "latest",
     "react-dom": "18.0.0",
     "react-fetch-hook": "1.9.5",
     "react-native": "0.69.6",

@@ -238,10 +238,6 @@ const RegisterScreen = props => {
                   if (!authToken) {
                     return;
                   }
-                  setGlobalVariableValue({
-                    key: 'AUTHORIZATION_HEADER',
-                    value: 'Bearer ' + authToken,
-                  });
                   navigation.navigate('DooCoinsScreen');
                 } catch (err) {
                   console.error(err);

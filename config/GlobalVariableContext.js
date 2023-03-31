@@ -6,8 +6,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const DeviceVariables = {
   AUTHORIZATION_HEADER:
     'eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.5_Z2Ajj11uqc-0ctLiNqBbQKSR-FbqEgDlAS5oOTagsaN6RYeelIw9u6FOVjRKDr5gawojNcAquMUXGs6XXKW2OtWfXjDKEy.TKFPH6UKUXs9HSH-delKcg.i4wfjthuMVysWmCgElQHHdqaH0ffHwx_FBPJs3LlR-0mjl6I53jSwzB0WRvfr2Bipnucd8h-MJQg6nk_U4aYyTptqlRSMzCCOZtXC98pL_thJWo5HpG6409ux2MjCu-CArBaFBKd5y6xmdNnzqj5EdGwDfXIopHncQZ0YyHT0uU.ygaleIXVtmtcrh0KyeNYoZg83X5ezWVHcCaZfgsS5lg',
+  Balance: '',
   Child_ID: '',
+  Child_List: '',
+  Child_Name: '',
+  Goal_Name: '',
+  Goal_Value: '',
   Parent_ID: '',
+  Reward_ID: '',
 };
 const AppVariables = {
   DC_symbol:

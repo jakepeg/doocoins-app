@@ -3,10 +3,16 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as DooCoinsAPIApi from '../apis/DooCoinsAPIApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
+import * as CustomCode from '../custom-files/CustomCode';
 import * as Utils from '../utils';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
-import { IconButton, ScreenContainer, withTheme } from '@draftbit/ui';
+import {
+  IconButton,
+  ScreenContainer,
+  Touchable,
+  withTheme,
+} from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import {
   ActivityIndicator,
@@ -23,6 +29,7 @@ const WalletScreen = props => {
   const dimensions = useWindowDimensions();
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
+  const setGlobalVariableValue = GlobalVariables.useSetValue();
 
   const humanReadableDate = time => {
     return new Date(time).toLocaleString('en-US', {
@@ -90,98 +97,64 @@ const WalletScreen = props => {
         </View>
         {/* Ballance */}
         <View>
-          {/* Balance */}
-          <>
-            {!Constants['Child_ID'] ? null : (
-              <DooCoinsAPIApi.FetchGetChildGET
-                children_id={Constants['Child_ID']}
-              >
-                {({ loading, error, data, refetchGetChild }) => {
-                  const balanceData = data;
-                  if (!balanceData || loading) {
-                    return <ActivityIndicator />;
-                  }
-
-                  if (error) {
-                    return (
-                      <Text style={{ textAlign: 'center' }}>
-                        There was a problem fetching this data
-                      </Text>
-                    );
-                  }
-
-                  return (
-                    <View
-                      style={StyleSheet.applyWidth(
-                        {
-                          backgroundColor: theme.colors['Strong'],
-                          height: 140,
-                          width: '100%',
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      <>
-                        {!balanceData?.name ? null : (
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(
-                                GlobalStyles.TextStyles(theme)['Text'],
-                                {
-                                  color: 'rgb(255, 255, 255)',
-                                  fontFamily: 'Roboto_400Regular',
-                                  fontSize: 32,
-                                  marginBottom: 10,
-                                  marginTop: 0,
-                                  textAlign: 'center',
-                                }
-                              ),
-                              dimensions.width
-                            )}
-                          >
-                            {balanceData?.name}
-                          </Text>
-                        )}
-                      </>
-                      <View
-                        style={StyleSheet.applyWidth(
-                          { flexDirection: 'row', justifyContent: 'center' },
-                          dimensions.width
-                        )}
-                      >
-                        <Image
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.ImageStyles(theme)['Image'],
-                              { height: 50, marginTop: 14, width: 50 }
-                            ),
-                            dimensions.width
-                          )}
-                          resizeMode={'cover'}
-                          source={Images.DCSymbol}
-                        />
-                        <Text
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(
-                              GlobalStyles.TextStyles(theme)['Text'],
-                              {
-                                color: 'rgb(255, 255, 255)',
-                                fontFamily: 'Roboto_300Light',
-                                fontSize: 66,
-                              }
-                            ),
-                            dimensions.width
-                          )}
-                        >
-                          {balanceData?.balance}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                }}
-              </DooCoinsAPIApi.FetchGetChildGET>
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                backgroundColor: theme.colors['Strong'],
+                height: 140,
+                width: '100%',
+              },
+              dimensions.width
             )}
-          </>
+          >
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: 'rgb(255, 255, 255)',
+                  fontFamily: 'Roboto_400Regular',
+                  fontSize: 32,
+                  marginBottom: 10,
+                  marginTop: 0,
+                  textAlign: 'center',
+                }),
+                dimensions.width
+              )}
+            >
+              {Constants['Child_Name']}
+            </Text>
+
+            <View
+              style={StyleSheet.applyWidth(
+                { flexDirection: 'row', justifyContent: 'center' },
+                dimensions.width
+              )}
+            >
+              <Image
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                    height: 50,
+                    marginTop: 14,
+                    width: 50,
+                  }),
+                  dimensions.width
+                )}
+                resizeMode={'cover'}
+                source={Images.DCSymbol}
+              />
+              <Text
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                    color: 'rgb(255, 255, 255)',
+                    fontFamily: 'Roboto_300Light',
+                    fontSize: 66,
+                  }),
+                  dimensions.width
+                )}
+              >
+                {Constants['Balance']}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       {/* Body */}
@@ -194,6 +167,141 @@ const WalletScreen = props => {
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
+        {/* Goal */}
+        <>
+          {!Constants['Reward_ID'] ? null : (
+            <View
+              style={StyleSheet.applyWidth(
+                {
+                  backgroundColor: theme.colors['White'],
+                  borderRadius: 10,
+                  borderStyle: 'solid',
+                  flexDirection: 'row',
+                  height: 160,
+                  justifyContent: 'space-between',
+                  margin: 20,
+                  padding: 20,
+                },
+                dimensions.width
+              )}
+            >
+              {/* Left col */}
+              <View>
+                <>
+                  {!Constants['Reward_ID'] ? null : (
+                    <DooCoinsAPIApi.FetchGetGoalGET
+                      rewards_id={Constants['Reward_ID']}
+                      onData={fetchData => {
+                        try {
+                          setGlobalVariableValue({
+                            key: 'Goal_Name',
+                            value: fetchData?.name,
+                          });
+                          setGlobalVariableValue({
+                            key: 'Goal_Value',
+                            value: fetchData?.value,
+                          });
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                    >
+                      {({ loading, error, data, refetchGetGoal }) => {
+                        const fetchData = data;
+                        if (!fetchData || loading) {
+                          return <ActivityIndicator />;
+                        }
+
+                        if (error) {
+                          return (
+                            <Text style={{ textAlign: 'center' }}>
+                              There was a problem fetching this data
+                            </Text>
+                          );
+                        }
+
+                        return (
+                          <>
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(
+                                  GlobalStyles.TextStyles(theme)['Text'],
+                                  {
+                                    fontFamily: 'Roboto_400Regular',
+                                    fontSize: 22,
+                                    marginBottom: 5,
+                                  }
+                                ),
+                                dimensions.width
+                              )}
+                            >
+                              {Constants['Child_Name']}
+                              {"'s Goal"}
+                            </Text>
+                            {/* GoalName */}
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(
+                                  GlobalStyles.TextStyles(theme)['Text'],
+                                  {
+                                    fontFamily: 'Roboto_400Regular',
+                                    fontSize: 22,
+                                    marginBottom: 5,
+                                  }
+                                ),
+                                dimensions.width
+                              )}
+                            >
+                              {fetchData?.name}
+                            </Text>
+                            {/* GoalValue */}
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(
+                                  GlobalStyles.TextStyles(theme)['Text'],
+                                  {
+                                    fontFamily: 'Roboto_400Regular',
+                                    fontSize: 22,
+                                    marginBottom: 5,
+                                  }
+                                ),
+                                dimensions.width
+                              )}
+                            >
+                              {'Target '}
+                              {fetchData?.value}
+                            </Text>
+
+                            <Touchable>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text'],
+                                    {
+                                      color: theme.colors['Primary'],
+                                      fontFamily: 'Roboto_400Regular',
+                                      fontSize: 22,
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {'Change goal'}
+                              </Text>
+                            </Touchable>
+                          </>
+                        );
+                      }}
+                    </DooCoinsAPIApi.FetchGetGoalGET>
+                  )}
+                </>
+              </View>
+              <Utils.CustomCodeErrorBoundary>
+                <CustomCode.GoalProgress />
+              </Utils.CustomCodeErrorBoundary>
+            </View>
+          )}
+        </>
         <Text
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
@@ -374,9 +482,6 @@ const WalletScreen = props => {
           </DooCoinsAPIApi.FetchGetTransactionsGET>
         </View>
       </ScrollView>
-      <Utils.CustomCodeErrorBoundary>
-        <></>
-      </Utils.CustomCodeErrorBoundary>
     </ScreenContainer>
   );
 };
