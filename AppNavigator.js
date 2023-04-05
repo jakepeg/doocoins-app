@@ -12,6 +12,7 @@ import AddRewardScreen from './screens/AddRewardScreen';
 import AddTaskScreen from './screens/AddTaskScreen';
 import ChildlistScreen from './screens/ChildlistScreen';
 import DooCoinsScreen from './screens/DooCoinsScreen';
+import GoalsScreen from './screens/GoalsScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import RewardsScreen from './screens/RewardsScreen';
@@ -136,6 +137,23 @@ function BottomNav() {
             />
           ),
           tabBarLabel: 'rewards',
+        }}
+      />
+      <Tab.Screen
+        name="GoalsScreen"
+        component={GoalsScreen}
+        options={{
+          title: 'Goals',
+          tabBarIcon: ({ focused, color }) => (
+            <Icon
+              name="Feather/target"
+              size={25}
+              color={
+                focused ? theme.colors['Primary'] : theme.colors['Background']
+              }
+            />
+          ),
+          tabBarLabel: 'goals',
         }}
       />
     </Tab.Navigator>

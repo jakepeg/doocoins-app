@@ -272,7 +272,15 @@ const WalletScreen = props => {
                               {fetchData?.value}
                             </Text>
 
-                            <Touchable>
+                            <Touchable
+                              onPress={() => {
+                                try {
+                                  navigation.navigate('GoalsScreen');
+                                } catch (err) {
+                                  console.error(err);
+                                }
+                              }}
+                            >
                               <Text
                                 style={StyleSheet.applyWidth(
                                   StyleSheet.compose(

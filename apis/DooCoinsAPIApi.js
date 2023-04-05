@@ -932,6 +932,80 @@ export const FetchLoginPOST = ({
   return children({ loading, data, error, refetchLogin: refetch });
 };
 
+export const setGoalPOST = (Constants, { Child_ID, Reward_ID }) =>
+  fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/setgoal`, {
+    body: JSON.stringify({ child_id: Child_ID, reward_id: Reward_ID }),
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    method: 'POST',
+  })
+    .then(res => {
+      if (!res.ok) {
+        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .catch(() => {});
+
+export const useSetGoalPOST = initialArgs => {
+  const queryClient = useQueryClient();
+  const Constants = GlobalVariables.useValues();
+
+  return useMutation(
+    args => setGoalPOST(Constants, { ...initialArgs, ...args }),
+    {
+      onError: (err, variables, { previousValue }) => {
+        if (previousValue) {
+          return queryClient.setQueryData('children', previousValue);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('child');
+        queryClient.invalidateQueries('children');
+      },
+    }
+  );
+};
+
+export const FetchSetGoalPOST = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  Child_ID,
+  Reward_ID,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    loading,
+    data,
+    error,
+    mutate: refetch,
+  } = useSetGoalPOST({ Child_ID, Reward_ID }, { refetchInterval });
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({ loading, data, error, refetchSetGoal: refetch });
+};
+
 export const signUpPOST = (
   Constants,
   { signupEmail, signupName, signupPassword }
