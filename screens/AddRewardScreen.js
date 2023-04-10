@@ -104,9 +104,9 @@ const AddRewardScreen = props => {
               { right: 10, top: 3 },
               dimensions.width
             )}
-            icon={'Ionicons/settings-sharp'}
             color={theme.colors['White']}
             size={24}
+            icon={'Ionicons/person-sharp'}
           />
         </View>
         {/* Ballance */}

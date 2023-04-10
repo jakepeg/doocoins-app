@@ -109,27 +109,6 @@ const DooCoinsScreen = props => {
       >
         <View
           style={StyleSheet.applyWidth(
-            { backgroundColor: theme.colors['Strong'], width: '100%' },
-            dimensions.width
-          )}
-        >
-          <Text
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                color: theme.colors['Surface'],
-                fontFamily: 'Roboto_400Regular',
-                fontSize: 26,
-                textAlign: 'center',
-              }),
-              dimensions.width
-            )}
-          >
-            {'Login'}
-          </Text>
-        </View>
-
-        <View
-          style={StyleSheet.applyWidth(
             {
               alignContent: 'center',
               alignItems: 'center',
@@ -249,7 +228,7 @@ const DooCoinsScreen = props => {
               }),
               dimensions.width
             )}
-            title={'continue'}
+            title={'sign in'}
           />
           <Touchable
             onPress={() => {

@@ -255,7 +255,7 @@ const RegisterScreen = props => {
               }),
               dimensions.width
             )}
-            title={'continue'}
+            title={'register'}
           />
           <Touchable
             onPress={() => {

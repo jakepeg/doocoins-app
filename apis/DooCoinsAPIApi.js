@@ -10,7 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 import usePrevious from '../utils/usePrevious';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 
-export const addRewardPOST = (
+export const addRewardPOSTStatusAndText = (
   Constants,
   { Child_ID, reward_name, reward_value }
 ) =>
@@ -22,15 +22,28 @@ export const addRewardPOST = (
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
-      }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const addRewardPOST = (
+  Constants,
+  { Child_ID, reward_name, reward_value }
+) =>
+  addRewardPOSTStatusAndText(Constants, {
+    Child_ID,
+    reward_name,
+    reward_value,
+  }).then(({ status, statusText, text }) => {
+    if (status < 200 || status > 299) {
+      console.error(`Fetch error: ${status} ${statusText}`);
+      return undefined;
+    }
+
+    return JSON.parse(text);
+  });
 
 export const useAddRewardPOST = initialArgs => {
   const queryClient = useQueryClient();
@@ -95,7 +108,10 @@ export const FetchAddRewardPOST = ({
   return children({ loading, data, error, refetchAddReward: refetch });
 };
 
-export const addTaskPOST = (Constants, { Child_ID, task_name, task_value }) =>
+export const addTaskPOSTStatusAndText = (
+  Constants,
+  { Child_ID, task_name, task_value }
+) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/tasks`, {
     body: JSON.stringify({
       name: task_name,
@@ -104,15 +120,23 @@ export const addTaskPOST = (Constants, { Child_ID, task_name, task_value }) =>
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const addTaskPOST = (Constants, { Child_ID, task_name, task_value }) =>
+  addTaskPOSTStatusAndText(Constants, { Child_ID, task_name, task_value }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useAddTaskPOST = initialArgs => {
   const queryClient = useQueryClient();
@@ -174,7 +198,7 @@ export const FetchAddTaskPOST = ({
   return children({ loading, data, error, refetchAddTask: refetch });
 };
 
-export const addTaskTransactionPOST = (
+export const addTaskTransactionPOSTStatusAndText = (
   Constants,
   { Child_ID, plus_minus, transaction_name, transaction_value }
 ) =>
@@ -187,15 +211,29 @@ export const addTaskTransactionPOST = (
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
-      }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const addTaskTransactionPOST = (
+  Constants,
+  { Child_ID, plus_minus, transaction_name, transaction_value }
+) =>
+  addTaskTransactionPOSTStatusAndText(Constants, {
+    Child_ID,
+    plus_minus,
+    transaction_name,
+    transaction_value,
+  }).then(({ status, statusText, text }) => {
+    if (status < 200 || status > 299) {
+      console.error(`Fetch error: ${status} ${statusText}`);
+      return undefined;
+    }
+
+    return JSON.parse(text);
+  });
 
 export const useAddTaskTransactionPOST = initialArgs => {
   const queryClient = useQueryClient();
@@ -261,7 +299,10 @@ export const FetchAddTaskTransactionPOST = ({
   return children({ loading, data, error, refetchAddTaskTransaction: refetch });
 };
 
-export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
+export const addChildPOSTStatusAndText = (
+  Constants,
+  { Parent_ID, new_child }
+) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children`, {
     body: JSON.stringify({
       name: new_child,
@@ -270,15 +311,23 @@ export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
+  addChildPOSTStatusAndText(Constants, { Parent_ID, new_child }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useAddChildPOST = initialArgs => {
   const queryClient = useQueryClient();
@@ -339,18 +388,24 @@ export const FetchAddChildPOST = ({
   return children({ loading, data, error, refetchAddChild: refetch });
 };
 
-export const childListGET = Constants =>
+export const childListGETStatusAndText = Constants =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children`, {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
-      }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const childListGET = Constants =>
+  childListGETStatusAndText(Constants).then(({ status, statusText, text }) => {
+    if (status < 200 || status > 299) {
+      console.error(`Fetch error: ${status} ${statusText}`);
+      return undefined;
+    }
+
+    return JSON.parse(text);
+  });
 
 export const useChildListGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -394,7 +449,7 @@ export const FetchChildListGET = ({
   return children({ loading, data, error, refetchChildList: refetch });
 };
 
-export const getChildGET = (Constants, { children_id }) =>
+export const getChildGETStatusAndText = (Constants, { children_id }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/children/${
       children_id ?? ''
@@ -405,15 +460,23 @@ export const getChildGET = (Constants, { children_id }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getChildGET = (Constants, { children_id }) =>
+  getChildGETStatusAndText(Constants, { children_id }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetChildGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -460,7 +523,7 @@ export const FetchGetChildGET = ({
   return children({ loading, data, error, refetchGetChild: refetch });
 };
 
-export const getChildrenGET = (Constants, { Parent_ID }) =>
+export const getChildrenGETStatusAndText = (Constants, { Parent_ID }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/childrenforparent2/${
       Parent_ID ?? ''
@@ -471,15 +534,23 @@ export const getChildrenGET = (Constants, { Parent_ID }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getChildrenGET = (Constants, { Parent_ID }) =>
+  getChildrenGETStatusAndText(Constants, { Parent_ID }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetChildrenGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -524,7 +595,7 @@ export const FetchGetChildrenGET = ({
   return children({ loading, data, error, refetchGetChildren: refetch });
 };
 
-export const getGoalGET = (Constants, { rewards_id }) =>
+export const getGoalGETStatusAndText = (Constants, { rewards_id }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/rewards/${
       rewards_id ?? ''
@@ -535,15 +606,23 @@ export const getGoalGET = (Constants, { rewards_id }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getGoalGET = (Constants, { rewards_id }) =>
+  getGoalGETStatusAndText(Constants, { rewards_id }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetGoalGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -590,7 +669,7 @@ export const FetchGetGoalGET = ({
   return children({ loading, data, error, refetchGetGoal: refetch });
 };
 
-export const getRewardsGET = (Constants, { Child_ID }) =>
+export const getRewardsGETStatusAndText = (Constants, { Child_ID }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildrewards/${
       Child_ID ?? ''
@@ -601,15 +680,23 @@ export const getRewardsGET = (Constants, { Child_ID }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getRewardsGET = (Constants, { Child_ID }) =>
+  getRewardsGETStatusAndText(Constants, { Child_ID }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetRewardsGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -654,7 +741,7 @@ export const FetchGetRewardsGET = ({
   return children({ loading, data, error, refetchGetRewards: refetch });
 };
 
-export const getTasksGET = (Constants, { child_id }) =>
+export const getTasksGETStatusAndText = (Constants, { child_id }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildtasks/${
       child_id ?? ''
@@ -665,15 +752,23 @@ export const getTasksGET = (Constants, { child_id }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getTasksGET = (Constants, { child_id }) =>
+  getTasksGETStatusAndText(Constants, { child_id }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetTasksGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -718,7 +813,7 @@ export const FetchGetTasksGET = ({
   return children({ loading, data, error, refetchGetTasks: refetch });
 };
 
-export const getTransactionsGET = (Constants, { child_id }) =>
+export const getTransactionsGETStatusAndText = (Constants, { child_id }) =>
   fetch(
     `https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/getchildtransactions/${
       child_id ?? ''
@@ -729,15 +824,23 @@ export const getTransactionsGET = (Constants, { child_id }) =>
         'Content-Type': 'application/json',
       },
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getTransactionsGET = (Constants, { child_id }) =>
+  getTransactionsGETStatusAndText(Constants, { child_id }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetTransactionsGET = (args, { refetchInterval } = {}) => {
   const Constants = GlobalVariables.useValues();
@@ -786,22 +889,30 @@ export const FetchGetTransactionsGET = ({
   return children({ loading, data, error, refetchGetTransactions: refetch });
 };
 
-export const getLoggedInUserGET = Constants =>
+export const getLoggedInUserGETStatusAndText = Constants =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/auth/me`, {
     headers: {
       Accept: 'application/json',
       Authorization: Constants['AUTHORIZATION_HEADER'],
       'Content-Type': 'application/json',
     },
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const getLoggedInUserGET = Constants =>
+  getLoggedInUserGETStatusAndText(Constants).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useGetLoggedInUserGET = () => {
   const Constants = GlobalVariables.useValues();
@@ -861,20 +972,31 @@ export const FetchGetLoggedInUserGET = ({
   return children({ loading, data, error, refetchGetLoggedInUser: refetch });
 };
 
-export const loginPOST = (Constants, { loginEmail, loginPassword }) =>
+export const loginPOSTStatusAndText = (
+  Constants,
+  { loginEmail, loginPassword }
+) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/auth/login`, {
     body: JSON.stringify({ email: loginEmail, password: loginPassword }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const loginPOST = (Constants, { loginEmail, loginPassword }) =>
+  loginPOSTStatusAndText(Constants, { loginEmail, loginPassword }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useLoginPOST = ({ loginEmail, loginPassword }) => {
   const Constants = GlobalVariables.useValues();
@@ -932,20 +1054,28 @@ export const FetchLoginPOST = ({
   return children({ loading, data, error, refetchLogin: refetch });
 };
 
-export const setGoalPOST = (Constants, { Child_ID, Reward_ID }) =>
+export const setGoalPOSTStatusAndText = (Constants, { Child_ID, Reward_ID }) =>
   fetch(`https://x8ki-letl-twmt.n7.xano.io/api:21fB7LVM/setgoal`, {
     body: JSON.stringify({ child_id: Child_ID, reward_id: Reward_ID }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const setGoalPOST = (Constants, { Child_ID, Reward_ID }) =>
+  setGoalPOSTStatusAndText(Constants, { Child_ID, Reward_ID }).then(
+    ({ status, statusText, text }) => {
+      if (status < 200 || status > 299) {
+        console.error(`Fetch error: ${status} ${statusText}`);
+        return undefined;
       }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+
+      return JSON.parse(text);
+    }
+  );
 
 export const useSetGoalPOST = initialArgs => {
   const queryClient = useQueryClient();
@@ -1006,7 +1136,7 @@ export const FetchSetGoalPOST = ({
   return children({ loading, data, error, refetchSetGoal: refetch });
 };
 
-export const signUpPOST = (
+export const signUpPOSTStatusAndText = (
   Constants,
   { signupEmail, signupName, signupPassword }
 ) =>
@@ -1018,15 +1148,28 @@ export const signUpPOST = (
     }),
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     method: 'POST',
-  })
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
-      }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+  }).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const signUpPOST = (
+  Constants,
+  { signupEmail, signupName, signupPassword }
+) =>
+  signUpPOSTStatusAndText(Constants, {
+    signupEmail,
+    signupName,
+    signupPassword,
+  }).then(({ status, statusText, text }) => {
+    if (status < 200 || status > 299) {
+      console.error(`Fetch error: ${status} ${statusText}`);
+      return undefined;
+    }
+
+    return JSON.parse(text);
+  });
 
 export const useSignUpPOST = ({ signupEmail, signupName, signupPassword }) => {
   const Constants = GlobalVariables.useValues();
@@ -1099,7 +1242,7 @@ export const FetchSignUpPOST = ({
   return children({ loading, data, error, refetchSignUp: refetch });
 };
 
-export const updateChildBalancePOST = (
+export const updateChildBalancePOSTStatusAndText = (
   Constants,
   {
     Child_ID,
@@ -1128,15 +1271,38 @@ export const updateChildBalancePOST = (
       },
       method: 'POST',
     }
-  )
-    .then(res => {
-      if (!res.ok) {
-        console.error('Fetch error: ' + res.status + ' ' + res.statusText);
-      }
-      return res;
-    })
-    .then(res => res.json())
-    .catch(() => {});
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const updateChildBalancePOST = (
+  Constants,
+  {
+    Child_ID,
+    Parent_ID,
+    Selected_Child_Balance,
+    Selected_Child_Name,
+    Selected_Child_Reward,
+    children_id,
+  }
+) =>
+  updateChildBalancePOSTStatusAndText(Constants, {
+    Child_ID,
+    Parent_ID,
+    Selected_Child_Balance,
+    Selected_Child_Name,
+    Selected_Child_Reward,
+    children_id,
+  }).then(({ status, statusText, text }) => {
+    if (status < 200 || status > 299) {
+      console.error(`Fetch error: ${status} ${statusText}`);
+      return undefined;
+    }
+
+    return JSON.parse(text);
+  });
 
 export const useUpdateChildBalancePOST = initialArgs => {
   const queryClient = useQueryClient();
