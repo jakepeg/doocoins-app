@@ -7,6 +7,7 @@ async function openCamera({
   mediaTypes = ImagePicker.MediaTypeOptions.Images,
   allowsEditing = false,
   cameraType = 'back',
+  videoMaxDuration,
   quality = 1,
 }) {
   if (Platform.OS !== 'web') {
@@ -20,25 +21,28 @@ async function openCamera({
   let result = await ImagePicker.launchCameraAsync({
     mediaTypes,
     allowsEditing,
-    quality,
     cameraType,
+    videoMaxDuration,
+    quality,
     base64: true,
   });
 
-  if (!result.cancelled) {
-    if (Platform.OS === 'web') return result.uri;
+  let asset = result.assets[0];
 
-    const mimeType = getMimeTypeFromFilename(result.uri);
+  if (!result.canceled && asset) {
+    if (Platform.OS === 'web') return asset.uri;
+
+    const mimeType = getMimeTypeFromFilename(asset.uri);
 
     if (result.type === 'video') {
-      const base64Video = await FileSystem.readAsStringAsync(result.uri, {
+      const base64Video = await FileSystem.readAsStringAsync(asset.uri, {
         encoding: 'base64',
       });
 
       return 'data:' + mimeType + ';base64,' + base64Video;
     }
 
-    return 'data:' + mimeType + ';base64,' + result.base64;
+    return 'data:' + mimeType + ';base64,' + asset.base64;
   }
 }
 

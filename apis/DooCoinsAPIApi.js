@@ -37,12 +37,17 @@ export const addRewardPOST = (
     reward_name,
     reward_value,
   }).then(({ status, statusText, text }) => {
-    if (status < 200 || status > 299) {
-      console.error(`Fetch error: ${status} ${statusText}`);
-      return undefined;
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error(
+        [
+          'Failed to parse response text as JSON.',
+          `Error: ${e.message}`,
+          `Text: ${JSON.stringify(text)}`,
+        ].join('\n\n')
+      );
     }
-
-    return JSON.parse(text);
   });
 
 export const useAddRewardPOST = initialArgs => {
@@ -129,12 +134,17 @@ export const addTaskPOSTStatusAndText = (
 export const addTaskPOST = (Constants, { Child_ID, task_name, task_value }) =>
   addTaskPOSTStatusAndText(Constants, { Child_ID, task_name, task_value }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -227,12 +237,17 @@ export const addTaskTransactionPOST = (
     transaction_name,
     transaction_value,
   }).then(({ status, statusText, text }) => {
-    if (status < 200 || status > 299) {
-      console.error(`Fetch error: ${status} ${statusText}`);
-      return undefined;
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error(
+        [
+          'Failed to parse response text as JSON.',
+          `Error: ${e.message}`,
+          `Text: ${JSON.stringify(text)}`,
+        ].join('\n\n')
+      );
     }
-
-    return JSON.parse(text);
   });
 
 export const useAddTaskTransactionPOST = initialArgs => {
@@ -320,12 +335,17 @@ export const addChildPOSTStatusAndText = (
 export const addChildPOST = (Constants, { Parent_ID, new_child }) =>
   addChildPOSTStatusAndText(Constants, { Parent_ID, new_child }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -399,12 +419,17 @@ export const childListGETStatusAndText = Constants =>
 
 export const childListGET = Constants =>
   childListGETStatusAndText(Constants).then(({ status, statusText, text }) => {
-    if (status < 200 || status > 299) {
-      console.error(`Fetch error: ${status} ${statusText}`);
-      return undefined;
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error(
+        [
+          'Failed to parse response text as JSON.',
+          `Error: ${e.message}`,
+          `Text: ${JSON.stringify(text)}`,
+        ].join('\n\n')
+      );
     }
-
-    return JSON.parse(text);
   });
 
 export const useChildListGET = (args, { refetchInterval } = {}) => {
@@ -469,12 +494,17 @@ export const getChildGETStatusAndText = (Constants, { children_id }) =>
 export const getChildGET = (Constants, { children_id }) =>
   getChildGETStatusAndText(Constants, { children_id }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -543,12 +573,17 @@ export const getChildrenGETStatusAndText = (Constants, { Parent_ID }) =>
 export const getChildrenGET = (Constants, { Parent_ID }) =>
   getChildrenGETStatusAndText(Constants, { Parent_ID }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -615,12 +650,17 @@ export const getGoalGETStatusAndText = (Constants, { rewards_id }) =>
 export const getGoalGET = (Constants, { rewards_id }) =>
   getGoalGETStatusAndText(Constants, { rewards_id }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -689,12 +729,17 @@ export const getRewardsGETStatusAndText = (Constants, { Child_ID }) =>
 export const getRewardsGET = (Constants, { Child_ID }) =>
   getRewardsGETStatusAndText(Constants, { Child_ID }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -761,12 +806,17 @@ export const getTasksGETStatusAndText = (Constants, { child_id }) =>
 export const getTasksGET = (Constants, { child_id }) =>
   getTasksGETStatusAndText(Constants, { child_id }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -833,12 +883,17 @@ export const getTransactionsGETStatusAndText = (Constants, { child_id }) =>
 export const getTransactionsGET = (Constants, { child_id }) =>
   getTransactionsGETStatusAndText(Constants, { child_id }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -905,12 +960,17 @@ export const getLoggedInUserGETStatusAndText = Constants =>
 export const getLoggedInUserGET = Constants =>
   getLoggedInUserGETStatusAndText(Constants).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -989,12 +1049,17 @@ export const loginPOSTStatusAndText = (
 export const loginPOST = (Constants, { loginEmail, loginPassword }) =>
   loginPOSTStatusAndText(Constants, { loginEmail, loginPassword }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -1068,12 +1133,17 @@ export const setGoalPOSTStatusAndText = (Constants, { Child_ID, Reward_ID }) =>
 export const setGoalPOST = (Constants, { Child_ID, Reward_ID }) =>
   setGoalPOSTStatusAndText(Constants, { Child_ID, Reward_ID }).then(
     ({ status, statusText, text }) => {
-      if (status < 200 || status > 299) {
-        console.error(`Fetch error: ${status} ${statusText}`);
-        return undefined;
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
       }
-
-      return JSON.parse(text);
     }
   );
 
@@ -1163,12 +1233,17 @@ export const signUpPOST = (
     signupName,
     signupPassword,
   }).then(({ status, statusText, text }) => {
-    if (status < 200 || status > 299) {
-      console.error(`Fetch error: ${status} ${statusText}`);
-      return undefined;
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error(
+        [
+          'Failed to parse response text as JSON.',
+          `Error: ${e.message}`,
+          `Text: ${JSON.stringify(text)}`,
+        ].join('\n\n')
+      );
     }
-
-    return JSON.parse(text);
   });
 
 export const useSignUpPOST = ({ signupEmail, signupName, signupPassword }) => {
@@ -1296,12 +1371,17 @@ export const updateChildBalancePOST = (
     Selected_Child_Reward,
     children_id,
   }).then(({ status, statusText, text }) => {
-    if (status < 200 || status > 299) {
-      console.error(`Fetch error: ${status} ${statusText}`);
-      return undefined;
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error(
+        [
+          'Failed to parse response text as JSON.',
+          `Error: ${e.message}`,
+          `Text: ${JSON.stringify(text)}`,
+        ].join('\n\n')
+      );
     }
-
-    return JSON.parse(text);
   });
 
 export const useUpdateChildBalancePOST = initialArgs => {

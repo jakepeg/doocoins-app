@@ -184,6 +184,27 @@ const RegisterScreen = props => {
             autoCapitalize={'none'}
             keyboardType={'email-address'}
           />
+          {/* Privacy */}
+          <View
+            style={StyleSheet.applyWidth(
+              { margin: 20, width: '80%' },
+              dimensions.width
+            )}
+          >
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['Background'],
+                  fontFamily: 'Roboto_400Regular',
+                }),
+                dimensions.width
+              )}
+            >
+              {
+                'Your email address is used to identify you and to allow you to recover your account if needed. We will not share any of your data.'
+              }
+            </Text>
+          </View>
           {/* password */}
           <TextInput
             onChangeText={newPasswordValue => {
@@ -229,8 +250,8 @@ const RegisterScreen = props => {
                       signupPassword: signupPassword,
                     }
                   );
-                  const authToken = signupResponseJSON.authToken;
-                  const message = signupResponseJSON.message;
+                  const authToken = signupResponseJSON?.authToken;
+                  const message = signupResponseJSON?.message;
                   setGlobalVariableValue({
                     key: 'ERROR_MESSAGE',
                     value: message,
