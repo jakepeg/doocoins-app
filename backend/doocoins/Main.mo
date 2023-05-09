@@ -6,28 +6,29 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Iter "mo:base/Iter";
 import Option "mo:base/Option";
-import Types "./Types"
+import Types "./Types";
+import Buffer "mo:base/Buffer";
 
 actor {
-    stable var profiles : Types.Profile = Trie.empty();
-    stable var childNumber : Nat = 1;
+     var profiles : Types.Profile = Trie.empty();
+     var childNumber : Nat = 1;
     //for keeping the child to tasks mapping
-    stable var childToTasks : Types.TaskMap = Trie.empty();
-    stable var childToTaskNumber: Trie.Trie<Text,Nat> = Trie.empty();
+     var childToTasks : Types.TaskMap = Trie.empty();
+     var childToTaskNumber: Trie.Trie<Text,Nat> = Trie.empty();
 
     //for keeping the child to transactions mapping
-    stable var childToTransactions:Types.TransactionMap = Trie.empty();
-    stable var childToTransactionNumber : Trie.Trie<Text,Nat> = Trie.empty();
+     var childToTransactions:Types.TransactionMap = Trie.empty();
+     var childToTransactionNumber : Trie.Trie<Text,Nat> = Trie.empty();
 
     //for keeping the child to goals mapping
-    stable var childToGoals : Types.GoalMap = Trie.empty();
-    stable var childToGoalNumber : Trie.Trie<Text,Nat> = Trie.empty();
+     var childToGoals : Types.GoalMap = Trie.empty();
+     var childToGoalNumber : Trie.Trie<Text,Nat> = Trie.empty();
 
     //for setting up child's current goal
-    stable var childToCurrentGoal:Trie.Trie<Text,Nat> = Trie.empty();
+     var childToCurrentGoal:Trie.Trie<Text,Nat> = Trie.empty();
 
     //for mapping child's doocoins balance to child
-    stable var childToBalance:Trie.Trie<Text,Nat> = Trie.empty(); 
+     var childToBalance:Trie.Trie<Text,Nat> = Trie.empty();
 
     //creating a new child record
     //----------------------------------------------------------------------------------------------------
@@ -35,9 +36,9 @@ actor {
         let callerId=msg.caller;
 
         // Reject AnonymousIdentity - 2vxsx-fae
-        if(Principal.toText(callerId) == "2vxsx-fae") {
+        /*if(Principal.toText(callerId) == "2vxsx-fae") {
             return #err(#NotAuthorized);
-        };
+        };*/
 
         let childId = Principal.toText(callerId) # "-" # Nat.toText(childNumber);
         childNumber +=1;
@@ -103,9 +104,9 @@ actor {
         let callerId=msg.caller;
 
         // Reject AnonymousIdentity - 2vxsx-fae
-        if(Principal.toText(callerId) == "2vxsx-fae") {
+       /* if(Principal.toText(callerId) == "2vxsx-fae") {
             return #err(#NotAuthorized);
-        };
+        };*/
 
         //Getting pointer of current task number of the child
         let currentTaskNumberPointer = Trie.find(
@@ -160,13 +161,17 @@ actor {
     //
     //----------------------------------------------------------------------------------------------------
     
-    public shared(msg) func getChildren():async Result.Result<[Types.Child],Types.Error>{
+        // Get all the children
+    //
+    //----------------------------------------------------------------------------------------------------
+
+    public shared(msg) func getChildren():async Result.Result<[Types.ChildResponse],Types.Error>{
         let callerId=msg.caller;
 
         // Reject AnonymousIdentity - 2vxsx-fae
-        if(Principal.toText(callerId) == "2vxsx-fae") {
+       /* if(Principal.toText(callerId) == "2vxsx-fae") {
             return #err(#NotAuthorized);
-        };
+        };*/
 
         let allChildren = Trie.find(
             profiles,
@@ -175,9 +180,25 @@ actor {
         );
 
         let allChildrenFormatted = Option.get(allChildren,Trie.empty());
-        return #ok(Trie.toArray(allChildrenFormatted,extractChildren));  
-    };
+        var newChildrenWithBalance = Buffer.Buffer<Types.ChildResponse>(0);
+        let iter = Trie.iter(allChildrenFormatted);
+        for ((k,v) in iter) {
+             let currentBalance = Trie.find(
+                    childToBalance,
+                    keyText(v.id),
+                    Text.equal
+                );
+                let currentBalanceFormatted = Option.get(currentBalance,0);
+            let newChild = {
+                id = v.id;
+                name = v.name;
+                balance = currentBalanceFormatted;
+            };
+            newChildrenWithBalance.add(newChild);
+        };
 
+        return #ok(newChildrenWithBalance.toArray());
+    };
     //Get the childs tasks
     //Parametes needed: childId
     //----------------------------------------------------------------------------------------------------
@@ -186,9 +207,9 @@ actor {
         let callerId = msg.caller;
 
         // Reject AnonymousIdentity - 2vxsx-fae
-        if(Principal.toText(callerId) == "2vxsx-fae") {
+       /* if(Principal.toText(callerId) == "2vxsx-fae") {
             return #err(#NotAuthorized);
-        };
+        };*/
 
         let myChildTasks = Trie.find(
             childToTasks,

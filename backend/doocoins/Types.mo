@@ -3,7 +3,12 @@ module{
     public type Child ={
         name:Text;
         id:Text;
-        
+    };
+
+     public type ChildResponse ={
+        name:Text;
+        id:Text;
+        balance:Nat;
     };
 
     public type ChildCall={
@@ -13,7 +18,7 @@ module{
     public type Task = {
         name:Text;
         value:Nat;
-        id:Nat
+        id:Nat;
     };
 
     public type TaskCall = {
